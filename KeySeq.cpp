@@ -487,10 +487,6 @@ void initSeq() {
         Globals::sim->root().addChild(cube);
         Globals::steps.push_back(cube);
     }
-    
-    for(int i = 0; i != Globals::steps.size(); i++){
-        cerr << i << endl;
-    }
 }
 
 //-----------------------------------------------------------------------------
@@ -501,13 +497,10 @@ void selectStep(int prev, int idx){
     YCubeOutline * step = NULL;
     YCubeOutline * nextStep = NULL;
     
-    cerr << prev << idx << endl;
     if (!(prev == -1)) {
         step = Globals::steps.at(prev);
         step->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
     }
     nextStep = Globals::steps.at(idx);
-    cerr << "got here" << endl;
     nextStep->col.set(0.953f, 0.525f, 0.188f);
-    cerr << "got here" << endl;
 }
