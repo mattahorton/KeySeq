@@ -1,5 +1,5 @@
 CXX=g++
-INCLUDES=-IRtAudio/ -Istk/ -Ix-api/ -Iy-api -Icore/
+INCLUDES=-IRtAudio/ -Istk/ -Ix-api/ -Iy-api -Icore/ -I./
 
 UNAME := $(shell uname)
 
@@ -21,7 +21,7 @@ OBJS=   RtAudio/RtAudio.o KeySeq.o color.o x-api/x-audio.o \
 	y-api/y-echo.o y-api/y-entity.o y-api/y-fft.o y-api/y-fluidsynth.o \
 	y-api/y-particle.o y-api/y-score-reader.o y-api/y-waveform.o \
 	stk/Delay.o stk/DelayL.o stk/MidiFileIn.o stk/Stk.o \
-	core/globals.o core/bk-sim.o
+	core/globals.o core/bk-sim.o Mediator.o
 
 KeySeq: $(OBJS)
 	$(CXX) -o KeySeq $(OBJS) $(LIBS)
@@ -100,6 +100,9 @@ core/bk-sim.o: core/bk-sim.h core/bk-sim.cpp
 
 core/globals.o: core/globals.h core/globals.cpp
 	$(CXX) -o core/globals.o $(FLAGS) core/globals.cpp
+
+Mediator.o: Mediator.h Mediator.cpp
+	$(CXX) $(FLAGS) Mediator.cpp
 
 clean:
 	rm -f *~ *# *.o */*.o KeySeq

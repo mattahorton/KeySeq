@@ -13,6 +13,7 @@
 #include "x-vector3d.h"
 #include "y-waveform.h"
 #include "y-entity.h"
+#include "Mediator.h"
 
 // c++
 #include <string>
@@ -42,6 +43,9 @@ class Globals
 public:
     // top level root simulation
     static BKSim * sim;
+
+    // global mediator
+    static Mediator * mediator;
 
     static std::vector<YCubeOutline *> steps;
     static int numSteps;

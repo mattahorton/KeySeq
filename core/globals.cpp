@@ -19,6 +19,9 @@
 // Global simulation
 BKSim * Globals::sim = NULL;
 
+// Global mediator
+Mediator * Globals::mediator = NULL;
+
 // Steps data structure
 std::vector<YCubeOutline *> Globals::steps;
 // Steps properties

@@ -143,6 +143,10 @@ int main( int argc, char ** argv )
     // instantiate simulation
     Globals::sim = new BKSim();
 
+    // instantiate global Mediator
+    Globals::mediator = new Mediator();
+    cerr << Globals::mediator->currentSamp;
+
     // Draw sequencer at start
     initSeq();
 
