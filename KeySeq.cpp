@@ -49,24 +49,17 @@ void mouseFunc( int button, int state, int x, int y );
 void help();
 void initSeq();
 void selectStep(int prev, int idx);
+int sampsPerBeat(float bpm);
+RtAudio initAudio();
+void startAudio(RtAudio audio);
 
 
 // our datetype
 #define SAMPLE float
 // corresponding format for RtAudio
 #define MY_FORMAT RTAUDIO_FLOAT32
-// sample rate
-#define MY_SRATE 44100
-// number of channels
-#define MY_CHANNELS 1
 // for convenience
 #define MY_PIE 3.14159265358979
-
-// width and height
-long g_width = 1024;
-long g_height = 720;
-long g_last_width = g_width;
-long g_last_height = g_height;
 
 // refresh rate settings
 long time_pre = 0;
@@ -74,12 +67,6 @@ int refresh_rate = 15000; //us
 struct timeval timer;
 // global buffer
 long g_bufferSize;
-
-#ifdef __UNIX_JACK__
-GLboolean g_fullscreen = gl_FALSE;
-#else
-GLboolean g_fullscreen = FALSE;
-#endif
 
 
 //-----------------------------------------------------------------------------
@@ -92,14 +79,14 @@ int callme( void * outputBuffer, void * inputBuffer, unsigned int numFrames,
     // cast!
     SAMPLE * input = (SAMPLE *)inputBuffer;
     SAMPLE * output = (SAMPLE *)outputBuffer;
-    
+
     // fill
     for( int i = 0; i < numFrames; i++ )
     {
         // zero output
         output[i] = 0;
     }
-    
+
     return 0;
 }
 
@@ -146,91 +133,24 @@ void help()
 int main( int argc, char ** argv )
 {
     // instantiate RtAudio object
-    RtAudio audio;
-    // variables
-    unsigned int bufferBytes = 0;
-    // frame size
-    unsigned int bufferFrames = 512;
-    
-    // check for audio devices
-    if( audio.getDeviceCount() < 1 )
-    {
-        // nopes
-        cout << "no audio devices found!" << endl;
-        exit( 1 );
-    }
+    RtAudio audio = initAudio();
 
     // initialize GLUT
     glutInit( &argc, argv );
     // init gfx
     initGfx();
-    
+
     // instantiate simulation
     Globals::sim = new BKSim();
-    
+
     // Draw sequencer at start
     initSeq();
 
-    // let RtAudio print messages to stderr.
-    audio.showWarnings( true );
+    // Start Audio
+    startAudio(audio);
 
-    // set input and output parameters
-    RtAudio::StreamParameters iParams, oParams;
-    iParams.deviceId = audio.getDefaultInputDevice();
-    iParams.nChannels = MY_CHANNELS;
-    iParams.firstChannel = 0;
-    oParams.deviceId = audio.getDefaultOutputDevice();
-    oParams.nChannels = MY_CHANNELS;
-    oParams.firstChannel = 0;
-    
-    // create stream options
-    RtAudio::StreamOptions options;
-
-    // go for it
-    try {
-        // open a stream
-        audio.openStream( &oParams, &iParams, MY_FORMAT, MY_SRATE, &bufferFrames, &callme, (void *)&bufferBytes, &options );
-    }
-    catch( RtError& e )
-    {
-        // error!
-        cout << e.getMessage() << endl;
-        exit( 1 );
-    }
-
-    // compute
-    bufferBytes = bufferFrames * MY_CHANNELS * sizeof(SAMPLE);
-    // allocate global buffer
-    g_bufferSize = bufferFrames;
-    
     // print help
     help();
-    
-    // go for it
-    try {
-        // start stream
-        audio.startStream();
-
-        // let GLUT handle the current thread from here
-        glutMainLoop();
-        
-        // stop the stream.
-        audio.stopStream();
-    }
-    catch( RtError& e )
-    {
-        // print error message
-        cout << e.getMessage() << endl;
-        goto cleanup;
-    }
-    
-cleanup:
-    // close if open
-    if( audio.isStreamOpen() )
-        audio.closeStream();
-    
-    // done
-    return 0;
 }
 
 
@@ -245,12 +165,12 @@ void initGfx()
     // double buffer, use rgb color, enable depth buffer
     glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH );
     // initialize the window size
-    glutInitWindowSize( g_width, g_height );
+    glutInitWindowSize( Globals::windowWidth, Globals::windowHeight );
     // set the window postion
     glutInitWindowPosition( 100, 100 );
     // create the window
     glutCreateWindow( "KeySeq" );
-    
+
     // set the idle function - called when idle
     glutIdleFunc( idleFunc );
     // set the display function - called when redrawing
@@ -263,7 +183,7 @@ void initGfx()
     glutSpecialFunc( specialFunc );
     // set the mouse function - called on mouse stuff
     glutMouseFunc( mouseFunc );
-    
+
     // set clear color
     // set the GL clear color - use when the color buffer is cleared
     glClearColor( Globals::bgColor.actual().x, Globals::bgColor.actual().y, Globals::bgColor.actual().z, 1.0f );
@@ -283,7 +203,7 @@ void initGfx()
 void reshapeFunc( GLsizei w, GLsizei h )
 {
     // save the new window size
-    g_width = w; g_height = h;
+    Globals::windowWidth = w; Globals::windowHeight = h;
     // map the view port to the client area
     glViewport( 0, 0, w, h );
     // set the matrix mode to project
@@ -310,7 +230,7 @@ void reshapeFunc( GLsizei w, GLsizei h )
 void keyboardFunc( unsigned char key, int x, int y )
 {
     int prev;
-    
+
     switch( key )
     {
         case 'Q':
@@ -321,17 +241,17 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'g': // toggle fullscreen
         {
             // check fullscreen
-            if( !g_fullscreen )
+            if( !Globals::fullscreen )
             {
-                g_last_width = g_width;
-                g_last_height = g_height;
+                Globals::lastWindowWidth = Globals::windowWidth;
+                Globals::lastWindowHeight = Globals::windowHeight;
                 glutFullScreen();
             }
             else
-                glutReshapeWindow( g_last_width, g_last_height );
-            
+                glutReshapeWindow( Globals::lastWindowWidth, Globals::lastWindowHeight );
+
             // toggle variable value
-            g_fullscreen = !g_fullscreen;
+            Globals::fullscreen = !Globals::fullscreen;
             break;
         }
         case 'A':
@@ -384,7 +304,7 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
     }
 
-    
+
     glutPostRedisplay( );
 }
 
@@ -432,7 +352,7 @@ void mouseFunc( int button, int state, int x, int y )
     else
     {
     }
-    
+
     glutPostRedisplay( );
 }
 
@@ -459,10 +379,10 @@ void displayFunc( )
 {
     // clear the color and depth buffers
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    
+
     // cascade simulation
     Globals::sim->systemCascade();
-    
+
     // flush!
     glFlush( );
     // swap the double buffer
@@ -475,7 +395,7 @@ void displayFunc( )
 // Desc: Draw and init the sequencer
 //-----------------------------------------------------------------------------
 void initSeq() {
-    
+
     for (int i = 0; i < 8; i++) {
         YCubeOutline * cube = new YCubeOutline();
         cube->loc = Vector3D::Vector3D((i-3.7)+(i+.7)*.1,0,0);
@@ -496,11 +416,107 @@ void initSeq() {
 void selectStep(int prev, int idx){
     YCubeOutline * step = NULL;
     YCubeOutline * nextStep = NULL;
-    
+
     if (!(prev == -1)) {
         step = Globals::steps.at(prev);
         step->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
     }
     nextStep = Globals::steps.at(idx);
     nextStep->col.set(0.953f, 0.525f, 0.188f);
+}
+
+//-----------------------------------------------------------------------------
+// Name: sampsPerBeat( )
+// Desc: calculate the samples per beat for the desired bpm
+//-----------------------------------------------------------------------------
+int sampsPerBeat(float bpm) {
+    int out = 0;
+    out = ceil(SRATE*60/bpm);
+    return out;
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: initAudio( )
+// Desc: initialize audio object
+//-----------------------------------------------------------------------------
+RtAudio initAudio() {
+
+  RtAudio audio;
+
+  // variables
+  Globals::lastAudioBufferBytes = 0;
+  // frame size
+  Globals::lastAudioBufferFrames = FRAMESIZE;
+
+
+  // check for audio devices
+  if( audio.getDeviceCount() < 1 )
+  {
+      // nopes
+      cout << "no audio devices found!" << endl;
+      exit( 1 );
+  }
+
+  return audio;
+}
+
+//-----------------------------------------------------------------------------
+// Name: startAudio( )
+// Desc: start audio stream
+//-----------------------------------------------------------------------------
+void startAudio(RtAudio audio) {
+  // let RtAudio print messages to stderr.
+  audio.showWarnings( true );
+
+  // set input and output parameters
+  RtAudio::StreamParameters iParams, oParams;
+  iParams.deviceId = audio.getDefaultInputDevice();
+  iParams.nChannels = NUMCHANNELS;
+  iParams.firstChannel = 0;
+  oParams.deviceId = audio.getDefaultOutputDevice();
+  oParams.nChannels = NUMCHANNELS;
+  oParams.firstChannel = 0;
+
+  // create stream options
+  RtAudio::StreamOptions options;
+
+  // go for it
+  try {
+      // open a stream
+      audio.openStream( &oParams, &iParams, MY_FORMAT, SRATE, &Globals::lastAudioBufferFrames, &callme, (void *)&Globals::lastAudioBufferBytes, &options );
+  }
+  catch( RtError& e )
+  {
+      // error!
+      cout << e.getMessage() << endl;
+      exit( 1 );
+  }
+
+  // compute
+  Globals::lastAudioBufferBytes = Globals::lastAudioBufferFrames * NUMCHANNELS * sizeof(SAMPLE);
+
+  // go for it
+  try {
+      // start stream
+      audio.startStream();
+
+      // let GLUT handle the current thread from here
+      glutMainLoop();
+
+      // stop the stream.
+      audio.stopStream();
+  }
+  catch( RtError& e )
+  {
+      // print error message
+      cout << e.getMessage() << endl;
+      // close if open
+      if( audio.isStreamOpen() )
+          audio.closeStream();
+
+      // done
+      exit(1);
+  }
+
 }
