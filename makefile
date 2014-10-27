@@ -15,7 +15,7 @@ LIBS=-framework CoreAudio -framework CoreMIDI -framework CoreFoundation \
 	-framework AppKit -lstdc++ -lm -lfluidsynth
 endif
 
-OBJS=   RtAudio/RtAudio.o stepseq.o color.o x-api/x-audio.o \
+OBJS=   RtAudio/RtAudio.o KeySeq.o color.o x-api/x-audio.o \
 	x-api/x-buffer.o x-api/x-fun.o x-api/x-gfx.o x-api/x-loadlum.o \
 	x-api/x-loadrgb.o x-api/x-thread.o x-api/x-vector3d.o y-api/y-charting.o \
 	y-api/y-echo.o y-api/y-entity.o y-api/y-fft.o y-api/y-fluidsynth.o \
@@ -23,11 +23,11 @@ OBJS=   RtAudio/RtAudio.o stepseq.o color.o x-api/x-audio.o \
 	stk/Delay.o stk/DelayL.o stk/MidiFileIn.o stk/Stk.o \
 	core/globals.o core/bk-sim.o
 
-stepseq: $(OBJS)
-	$(CXX) -o stepseq $(OBJS) $(LIBS)
+KeySeq: $(OBJS)
+	$(CXX) -o KeySeq $(OBJS) $(LIBS)
 
-stepseq.o: stepseq.cpp RtAudio/RtAudio.h y-api/y-entity.h x-api/x-vector3d.h
-	$(CXX) $(FLAGS) stepseq.cpp
+KeySeq.o: KeySeq.cpp RtAudio/RtAudio.h y-api/y-entity.h x-api/x-vector3d.h
+	$(CXX) $(FLAGS) KeySeq.cpp
 
 RtAudio/RtAudio.o: RtAudio/RtAudio.h RtAudio/RtAudio.cpp RtAudio/RtError.h
 	$(CXX) -o RtAudio/RtAudio.o $(FLAGS) RtAudio/RtAudio.cpp
@@ -102,4 +102,4 @@ core/globals.o: core/globals.h core/globals.cpp
 	$(CXX) -o core/globals.o $(FLAGS) core/globals.cpp
 
 clean:
-	rm -f *~ *# *.o */*.o stepseq
+	rm -f *~ *# *.o */*.o KeySeq

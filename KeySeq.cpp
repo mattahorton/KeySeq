@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-// name: stepseq.cpp
+// name: KeySeq.cpp
 // desc: step sequencer for hw3
 //
 // author: Matt Horton (mattah@ccrma.stanford.edu)
@@ -249,7 +249,7 @@ void initGfx()
     // set the window postion
     glutInitWindowPosition( 100, 100 );
     // create the window
-    glutCreateWindow( "stepseq" );
+    glutCreateWindow( "KeySeq" );
     
     // set the idle function - called when idle
     glutIdleFunc( idleFunc );
