@@ -17,6 +17,8 @@
 #include "y-entity.h"
 #include "globals.h"
 #include "bk-sim.h"
+#include "Mediator.h"
+#include "audio.h"
 using namespace std;
 
 #ifdef __MACOSX_CORE__
@@ -49,6 +51,7 @@ void mouseFunc( int button, int state, int x, int y );
 void help();
 void initSeq();
 void selectStep(int prev, int idx);
+void playStep(int prev, int idx);
 int sampsPerBeat(float bpm);
 RtAudio initAudio();
 void startAudio(RtAudio audio);
@@ -69,26 +72,6 @@ struct timeval timer;
 long g_bufferSize;
 
 
-//-----------------------------------------------------------------------------
-// name: callme()
-// desc: audio callback
-//-----------------------------------------------------------------------------
-int callme( void * outputBuffer, void * inputBuffer, unsigned int numFrames,
-            double streamTime, RtAudioStreamStatus status, void * data )
-{
-    // cast!
-    SAMPLE * input = (SAMPLE *)inputBuffer;
-    SAMPLE * output = (SAMPLE *)outputBuffer;
-
-    // fill
-    for( int i = 0; i < numFrames; i++ )
-    {
-        // zero output
-        output[i] = 0;
-    }
-
-    return 0;
-}
 
 //-----------------------------------------------------------------------------
 // Name: help( )
@@ -132,8 +115,8 @@ void help()
 //-----------------------------------------------------------------------------
 int main( int argc, char ** argv )
 {
-    // instantiate RtAudio object
-    RtAudio audio = initAudio();
+    // init audio
+    audio_init(THE_SRATE, FRAMESIZE, NUMCHANNELS);
 
     // initialize GLUT
     glutInit( &argc, argv );
@@ -145,16 +128,24 @@ int main( int argc, char ** argv )
 
     // instantiate global Mediator
     Globals::mediator = new Mediator();
-    cerr << Globals::mediator->currentSamp;
+    Globals::mediator->registerCallback(10000,&playStep);
 
     // Draw sequencer at start
     initSeq();
 
+    // Midi setup
+    for (int i = 0; i < Globals::steps.size(); i++) {
+      Globals::octaveOffsets.push_back(0);
+    }
+
     // Start Audio
-    startAudio(audio);
+    audio_start();
 
     // print help
     help();
+
+    // let GLUT handle the current thread from here
+    glutMainLoop();
 }
 
 
@@ -195,6 +186,7 @@ void initGfx()
     glEnable( GL_COLOR_MATERIAL );
     // enable depth test
     glEnable( GL_DEPTH_TEST );
+
 }
 
 
@@ -318,7 +310,21 @@ void keyboardFunc( unsigned char key, int x, int y )
 //-----------------------------------------------------------------------------
 void specialFunc(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
+      if (Globals::selectedStep != -1) {
+        if (Globals::octaveOffsets.at(Globals::selectedStep) < 5) {
+          Globals::octaveOffsets.at(Globals::selectedStep) =
+            Globals::octaveOffsets.at(Globals::selectedStep)+1;
+        }
+      }
     } else if (key == GLUT_KEY_DOWN) {
+      if (Globals::selectedStep != -1) {
+        if (Globals::octaveOffsets.at(Globals::selectedStep) > -5) {
+          Globals::octaveOffsets.at(Globals::selectedStep) =
+            Globals::octaveOffsets.at(Globals::selectedStep)-1;
+        } else {
+          Globals::octaveOffsets.at(Globals::selectedStep) = -5;
+        }
+      }
     } else if (key == GLUT_KEY_RIGHT) {
         //Globals::cube->size = Globals::cube->size + Vector3D::Vector3D(2,5,6);
     } else if (key == GLUT_KEY_LEFT) {
@@ -401,15 +407,18 @@ void displayFunc( )
 void initSeq() {
 
     for (int i = 0; i < 8; i++) {
-        YCubeOutline * cube = new YCubeOutline();
-        cube->loc = Vector3D::Vector3D((i-3.7)+(i+.7)*.1,0,0);
-        cube->sca = Vector3D::Vector3D(1,1,1);
-        cube->outlineColor = Vector3D::Vector3D(0.655, 0.859, 0.859);
-        cube->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
+        YSphere * sphere = new YSphere();
+        sphere->loc = Vector3D::Vector3D((i-6.0)+(i*.7),0,0);
+        //sphere->loc = Vector3D::Vector3D(6.75,0,0);
+        sphere->sca = Vector3D::Vector3D(.5,.5,.5);
+        //cube->outlineColor = Vector3D::Vector3D(0.655, 0.859, 0.859);
+        sphere->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
         //cube->ori = Vector3D::Vector3D(0,11,0);
-        cube->ori = Vector3D::Vector3D(0,0,0);
-        Globals::sim->root().addChild(cube);
-        Globals::steps.push_back(cube);
+        sphere->ori = Vector3D::Vector3D(0,0,0);
+        sphere->slices = 50;
+        sphere->stacks = 50;
+        Globals::sim->root().addChild(sphere);
+        Globals::steps.push_back(sphere);
     }
 }
 
@@ -418,8 +427,8 @@ void initSeq() {
 // Desc: Select the step we're interested in modifying
 //-----------------------------------------------------------------------------
 void selectStep(int prev, int idx){
-    YCubeOutline * step = NULL;
-    YCubeOutline * nextStep = NULL;
+    YEntity * step = NULL;
+    YEntity * nextStep = NULL;
 
     if (!(prev == -1)) {
         step = Globals::steps.at(prev);
@@ -430,97 +439,32 @@ void selectStep(int prev, int idx){
 }
 
 //-----------------------------------------------------------------------------
+// Name: playStep( )
+// Desc: play a step
+//-----------------------------------------------------------------------------
+void playStep(int prev, int idx){
+    YEntity * step = NULL;
+    YEntity * nextStep = NULL;
+
+    if (!(prev == -1) && (prev != Globals::selectedStep)) {
+      step = Globals::steps.at(prev);
+      step->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
+    } else if (prev == Globals::selectedStep) {
+      step = Globals::steps.at(prev);
+      step->col.set(0.953f, 0.525f, 0.188f);
+    }
+    nextStep = Globals::steps.at(idx);
+    nextStep->col.set(0.655, 0.859, 0.859);
+
+    play(60+12*Globals::octaveOffsets.at(idx),100);
+}
+
+//-----------------------------------------------------------------------------
 // Name: sampsPerBeat( )
 // Desc: calculate the samples per beat for the desired bpm
 //-----------------------------------------------------------------------------
 int sampsPerBeat(float bpm) {
     int out = 0;
-    out = ceil(SRATE*60/bpm);
+    out = ceil(THE_SRATE*60/bpm);
     return out;
-}
-
-
-//-----------------------------------------------------------------------------
-// Name: initAudio( )
-// Desc: initialize audio object
-//-----------------------------------------------------------------------------
-RtAudio initAudio() {
-
-  RtAudio audio;
-
-  // variables
-  Globals::lastAudioBufferBytes = 0;
-  // frame size
-  Globals::lastAudioBufferFrames = FRAMESIZE;
-
-
-  // check for audio devices
-  if( audio.getDeviceCount() < 1 )
-  {
-      // nopes
-      cout << "no audio devices found!" << endl;
-      exit( 1 );
-  }
-
-  return audio;
-}
-
-//-----------------------------------------------------------------------------
-// Name: startAudio( )
-// Desc: start audio stream
-//-----------------------------------------------------------------------------
-void startAudio(RtAudio audio) {
-  // let RtAudio print messages to stderr.
-  audio.showWarnings( true );
-
-  // set input and output parameters
-  RtAudio::StreamParameters iParams, oParams;
-  iParams.deviceId = audio.getDefaultInputDevice();
-  iParams.nChannels = NUMCHANNELS;
-  iParams.firstChannel = 0;
-  oParams.deviceId = audio.getDefaultOutputDevice();
-  oParams.nChannels = NUMCHANNELS;
-  oParams.firstChannel = 0;
-
-  // create stream options
-  RtAudio::StreamOptions options;
-
-  // go for it
-  try {
-      // open a stream
-      audio.openStream( &oParams, &iParams, MY_FORMAT, SRATE, &Globals::lastAudioBufferFrames, &callme, (void *)&Globals::lastAudioBufferBytes, &options );
-  }
-  catch( RtError& e )
-  {
-      // error!
-      cout << e.getMessage() << endl;
-      exit( 1 );
-  }
-
-  // compute
-  Globals::lastAudioBufferBytes = Globals::lastAudioBufferFrames * NUMCHANNELS * sizeof(SAMPLE);
-
-  // go for it
-  try {
-      // start stream
-      audio.startStream();
-
-      // let GLUT handle the current thread from here
-      glutMainLoop();
-
-      // stop the stream.
-      audio.stopStream();
-  }
-  catch( RtError& e )
-  {
-      // print error message
-      cout << e.getMessage() << endl;
-      // close if open
-      if( audio.isStreamOpen() )
-          audio.closeStream();
-
-      // done
-      exit(1);
-  }
-
 }

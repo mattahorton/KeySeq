@@ -21,7 +21,7 @@ OBJS=   RtAudio/RtAudio.o KeySeq.o color.o x-api/x-audio.o \
 	y-api/y-echo.o y-api/y-entity.o y-api/y-fft.o y-api/y-fluidsynth.o \
 	y-api/y-particle.o y-api/y-score-reader.o y-api/y-waveform.o \
 	stk/Delay.o stk/DelayL.o stk/MidiFileIn.o stk/Stk.o \
-	core/globals.o core/bk-sim.o Mediator.o
+	core/globals.o core/bk-sim.o Mediator.o core/audio.o
 
 KeySeq: $(OBJS)
 	$(CXX) -o KeySeq $(OBJS) $(LIBS)
@@ -103,6 +103,9 @@ core/globals.o: core/globals.h core/globals.cpp
 
 Mediator.o: Mediator.h Mediator.cpp
 	$(CXX) $(FLAGS) Mediator.cpp
+
+core/audio.o: core/audio.h core/audio.cpp
+	$(CXX) -o core/audio.o $(FLAGS) core/audio.cpp
 
 clean:
 	rm -f *~ *# *.o */*.o KeySeq

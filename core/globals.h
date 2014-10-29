@@ -13,7 +13,6 @@
 #include "x-vector3d.h"
 #include "y-waveform.h"
 #include "y-entity.h"
-#include "Mediator.h"
 
 // c++
 #include <string>
@@ -22,7 +21,7 @@
 #include <utility>
 
 // defines
-#define SRATE        44100
+#define THE_SRATE        44100
 #define FRAMESIZE    512
 #define NUMCHANNELS  2
 #define MAX_TEXTURES 32
@@ -33,6 +32,8 @@
 
 // forward reference
 class BKSim;
+// forward reference
+class Mediator;
 
 //-----------------------------------------------------------------------------
 // name: class Globals
@@ -47,9 +48,13 @@ public:
     // global mediator
     static Mediator * mediator;
 
-    static std::vector<YCubeOutline *> steps;
+    static std::vector<YEntity *> steps;
     static int numSteps;
     static int selectedStep;
+    static int playingStep;
+
+    // Midi globals
+    static std::vector<int> octaveOffsets;
 
     // path
     static std::string path;

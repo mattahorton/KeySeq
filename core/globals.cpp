@@ -23,10 +23,14 @@ BKSim * Globals::sim = NULL;
 Mediator * Globals::mediator = NULL;
 
 // Steps data structure
-std::vector<YCubeOutline *> Globals::steps;
+std::vector<YEntity *> Globals::steps;
 // Steps properties
 int Globals::numSteps = 8;
 int Globals::selectedStep = -1;
+int Globals::playingStep = 0;
+
+// Midi globals
+std::vector<int> Globals::octaveOffsets;
 
 // Window size globals
 GLsizei Globals::windowWidth = DEFAULT_WINDOW_WIDTH;
