@@ -226,11 +226,11 @@ void reshapeFunc( GLsizei w, GLsizei h )
 void keyboardFunc( unsigned char key, int x, int y )
 {
     int prev;
+    YEntity * step;
 
     switch( key )
     {
-        case 'Q':
-        case 'q':
+        case 27: // escape
             exit(1);
             break;
         case 'G':
@@ -256,11 +256,31 @@ void keyboardFunc( unsigned char key, int x, int y )
             Globals::selectedStep = 0;
             selectStep(prev, Globals::selectedStep);
             break;
+        case 'Q':
+        case 'q':
+            step = Globals::steps.at(0);
+            step->loc.y += 0.5;
+            break;
+        case 'Z':
+        case 'z':
+            step = Globals::steps.at(0);
+            step->loc.y -= 0.5;
+            break;
         case 'S':
         case 's':
             prev = Globals::selectedStep;
             Globals::selectedStep = 1;
             selectStep(prev, Globals::selectedStep);
+            break;
+        case 'W':
+        case 'w':
+            step = Globals::steps.at(1);
+            step->loc.y += 0.5;
+            break;
+        case 'X':
+        case 'x':
+            step = Globals::steps.at(1);
+            step->loc.y -= 0.5;
             break;
         case 'D':
         case 'd':
@@ -268,11 +288,31 @@ void keyboardFunc( unsigned char key, int x, int y )
             Globals::selectedStep = 2;
             selectStep(prev, Globals::selectedStep);
             break;
+        case 'E':
+        case 'e':
+            step = Globals::steps.at(2);
+            step->loc.y += 0.5;
+            break;
+        case 'C':
+        case 'c':
+            step = Globals::steps.at(2);
+            step->loc.y -= 0.5;
+            break;
         case 'F':
         case 'f':
             prev = Globals::selectedStep;
             Globals::selectedStep = 3;
             selectStep(prev, Globals::selectedStep);
+            break;
+        case 'R':
+        case 'r':
+            step = Globals::steps.at(3);
+            step->loc.y += 0.5;
+            break;
+        case 'V':
+        case 'v':
+            step = Globals::steps.at(3);
+            step->loc.y -= 0.5;
             break;
         case 'J':
         case 'j':
@@ -280,11 +320,32 @@ void keyboardFunc( unsigned char key, int x, int y )
             Globals::selectedStep = 4;
             selectStep(prev, Globals::selectedStep);
             break;
+        case 'U':
+        case 'u':
+            step = Globals::steps.at(4);
+            step->loc.y += 0.5;
+            break;
+        case 'M':
+        case 'm':
+            step = Globals::steps.at(4);
+            step->loc.y -= 0.5;
+            break;
         case 'K':
         case 'k':
             prev = Globals::selectedStep;
             Globals::selectedStep = 5;
             selectStep(prev, Globals::selectedStep);
+            break;
+
+        case 'I':
+        case 'i':
+            step = Globals::steps.at(5);
+            step->loc.y += 0.5;
+            break;
+        case '<':
+        case ',':
+            step = Globals::steps.at(5);
+            step->loc.y -= 0.5;
             break;
         case 'L':
         case 'l':
@@ -292,11 +353,31 @@ void keyboardFunc( unsigned char key, int x, int y )
             Globals::selectedStep = 6;
             selectStep(prev, Globals::selectedStep);
             break;
+        case 'O':
+        case 'o':
+            step = Globals::steps.at(6);
+            step->loc.y += 0.5;
+            break;
+        case '>':
+        case '.':
+            step = Globals::steps.at(6);
+            step->loc.y -= 0.5;
+            break;
         case ':':
         case ';':
             prev = Globals::selectedStep;
             Globals::selectedStep = 7;
             selectStep(prev, Globals::selectedStep);
+            break;
+        case 'P':
+        case 'p':
+            step = Globals::steps.at(7);
+            step->loc.y += 0.5;
+            break;
+        case '?':
+        case '/':
+            step = Globals::steps.at(7);
+            step->loc.y -= 0.5;
             break;
     }
 
@@ -407,18 +488,15 @@ void displayFunc( )
 void initSeq() {
 
     for (int i = 0; i < 8; i++) {
-        YSphere * sphere = new YSphere();
-        sphere->loc = Vector3D::Vector3D((i-6.0)+(i*.7),0,0);
-        //sphere->loc = Vector3D::Vector3D(6.75,0,0);
-        sphere->sca = Vector3D::Vector3D(.5,.5,.5);
-        //cube->outlineColor = Vector3D::Vector3D(0.655, 0.859, 0.859);
-        sphere->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
-        //cube->ori = Vector3D::Vector3D(0,11,0);
-        sphere->ori = Vector3D::Vector3D(0,0,0);
-        sphere->slices = 50;
-        sphere->stacks = 50;
-        Globals::sim->root().addChild(sphere);
-        Globals::steps.push_back(sphere);
+        YCubeOutline * cube = new YCubeOutline();
+        cube->loc = Vector3D::Vector3D((i-6.0)+(i*.7),0,0);
+        cube->sca = Vector3D::Vector3D(.7,.7,.7);
+        cube->outlineColor = Vector3D::Vector3D(0.655, 0.859, 0.859);
+        cube->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
+        cube->ori = Vector3D::Vector3D(0,0,0);
+
+        Globals::sim->root().addChild(cube);
+        Globals::steps.push_back(cube);
     }
 }
 
