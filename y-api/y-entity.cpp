@@ -54,9 +54,9 @@ void YEntity::updateAll( YTimeInterval dt )
 
     // update self
     update( dt );
-    
+
     // update children
-    for( vector<YEntity *>::iterator itr = children.begin(); 
+    for( vector<YEntity *>::iterator itr = children.begin();
          itr != children.end(); itr++ )
     {
         (*itr)->updateAll( dt );
@@ -70,16 +70,16 @@ void YEntity::updateAll( YTimeInterval dt )
 // name: updateAllPostRender()
 //
 // updates that you need to do after render. This is somewhat of a hack,
-// needed by FX because it needs to get GL state in render before it 
+// needed by FX because it needs to get GL state in render before it
 // can update
 //----------------------------------------------------------------------------
 void YEntity::updateAllPostRender( YTimeInterval dt )
 {
     // update self
     updatePostRender( dt );
-    
+
     // update children
-    for( vector<YEntity *>::iterator itr = children.begin(); 
+    for( vector<YEntity *>::iterator itr = children.begin();
         itr != children.end(); itr++ )
     {
         (*itr)->updateAllPostRender( dt );
@@ -110,9 +110,9 @@ void YEntity::apply( EntityBlock block )
 {
     // Run the block on ourselves
     block( this );
-    
+
     // Apply to our children
-    for( vector<YEntity *>::iterator itr = children.begin(); 
+    for( vector<YEntity *>::iterator itr = children.begin();
          itr != children.end(); itr++ )
     {
         (*itr)->apply( block );
@@ -130,18 +130,18 @@ void YEntity::drawAll()
 {
     if( !active )
         return;
-    
+
     // apply transforms
     applyTransforms();
-    
+
     // render self if not hidden
     if( !hidden )
     {
         render();
     }
-    
+
     // draw children
-    for( vector<YEntity *>::iterator itr = children.begin(); 
+    for( vector<YEntity *>::iterator itr = children.begin();
          itr != children.end(); itr++ )
     {
         (*itr)->drawAll();
@@ -161,7 +161,7 @@ void YEntity::drawAll()
 void YEntity::addChild( YEntity * child )
 {
     child->parent = this;
-    children.push_back( child ); 
+    children.push_back( child );
 }
 
 
@@ -180,7 +180,7 @@ void YEntity::removeAllChildren()
         // clear
         children[i]->parent = NULL;
     }
-    
+
     // clear
     children.clear();
 }
@@ -197,11 +197,11 @@ bool YEntity::anyParentSelected()
     // check if this node is selected
     if( selected )
     {
-        return true; 
-    } 
-    
+        return true;
+    }
+
     // check parent recursively
-    return parent != NULL ? parent->anyParentSelected() : false; 
+    return parent != NULL ? parent->anyParentSelected() : false;
 }
 
 
@@ -240,10 +240,10 @@ void YEntity::dumpSceneGraph( int depth )
     char padding[depth+1];
     memset( padding, ' ', depth );
     padding[depth]=0;
- 
+
     // print current node
     printf( "%s[%s]\n", padding, desc().c_str() );
-    
+
     // print childrens
     for( std::vector<YEntity*>::iterator ei = children.begin();
          ei != children.end(); ++ei )
@@ -329,7 +329,7 @@ void YText::set( const string & text )
 {
     // copy
     m_text = text;
-    
+
     // compute length
     m_length = .001 * glutStrokeLength( GLUT_STROKE_ROMAN,
                                         (const unsigned char *)text.c_str() );
@@ -408,7 +408,7 @@ void YText::update( YTimeInterval dt )
 {
     // interpolate
     m_iAlpha.interp( dt );
-    
+
     // set it
     alpha = m_iAlpha.value;
 }
@@ -427,7 +427,7 @@ void YText::render()
     glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
     // lighting
     glDisable( GL_LIGHTING );
-    
+
     // set the linewidth
     glLineWidth( m_width );
     // push
@@ -453,7 +453,7 @@ void YText::drawString( const std::string & text )
     GLint len = (GLint)text.length();
     // get c string
     const char * str = text.c_str();
-    
+
     // push
     glPushMatrix();
     // scale to be smaller
@@ -523,7 +523,7 @@ YFlare::YFlare( GLfloat width )
     vertices[5] = half_width;
     vertices[6] = half_width;
     vertices[7] = half_width;
-    
+
     // set
     scale = 1.0f;
     scale_factor = 1.0f;
@@ -538,7 +538,7 @@ YFlare::YFlare( GLfloat width )
 // name: set()
 // desc: set some paramss
 //-----------------------------------------------------------------------------
-void YFlare::set( GLfloat _scale, GLfloat _alpha, GLfloat _scale_factor, 
+void YFlare::set( GLfloat _scale, GLfloat _alpha, GLfloat _scale_factor,
                    GLfloat _alpha_factor, GLuint _texture )
 {
     this->scale = _scale;
@@ -560,7 +560,7 @@ void YFlare::update( YTimeInterval dt )
     // alpha
     // alpha *= alpha_factor;
     // scale *= scale_factor;
-    
+
     // fugde: figure out diff
     GLfloat alpha_diff = alpha_factor - 1.0f;
     GLfloat scale_diff = scale_factor - 1.0f;
@@ -571,10 +571,10 @@ void YFlare::update( YTimeInterval dt )
     // alpha
     alpha += alpha_diff;
     scale += scale_diff;
-    
+
     // stop scaling
     if( scale < scale_lowerBound ) scale_factor = 1.0f;
-    
+
     // active
     if( alpha < .01f )
     {
@@ -651,12 +651,12 @@ void YFlare::render()
 // name: set()
 // desc: set some paramss
 //-----------------------------------------------------------------------------
-void YBokeh::set( GLfloat _scale, GLfloat _alpha, GLfloat _scale_factor, 
+void YBokeh::set( GLfloat _scale, GLfloat _alpha, GLfloat _scale_factor,
                   GLfloat _alpha_factor, GLuint _texture )
 {
     // super
     YFlare::set( _scale, _alpha, _scale_factor, _alpha_factor, _texture );
-    
+
     // set for this
     this->scale_actual = _scale;
 }
@@ -694,11 +694,11 @@ void YBokeh::update( YTimeInterval dt )
     // interp
     iRGB.interp( dt );
     iLoc.interp( dt );
-    
+
     // update
     col = iRGB.actual();
     loc = iLoc.actual();
-    
+
 //    // interp
 //    iAlpha.interp( MoGfx::delta() );
 //
@@ -725,7 +725,7 @@ void YBokeh::render()
     glEnable( GL_DEPTH_TEST );
     // disable writing
     glDepthMask( GL_FALSE );
-    
+
     // enable blending
     glEnable( GL_BLEND );
     // blend function
@@ -734,14 +734,14 @@ void YBokeh::render()
     glEnable( GL_TEXTURE_2D );
     // bind the texture
     glBindTexture( GL_TEXTURE_2D, texture );
-    
+
     glPushMatrix();
-    
+
     // enable
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_NORMAL_ARRAY );
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
-    
+
     // modulate the scale
     scale_actual = scale * (.7 + .25*::cos( t*2*M_PI*f ));
     // modulate the alpha
@@ -757,7 +757,7 @@ void YBokeh::render()
     glNormalPointer( GL_FLOAT, 0, g_normals );
     // texture coordinate
     glTexCoordPointer( 2, GL_FLOAT, 0, g_texCoords );
-    
+
     // scale
     glScalef( scale_actual, scale_actual, scale_actual );
     // alpha
@@ -765,10 +765,10 @@ void YBokeh::render()
     scale *= scale_factor;
     // triangle strip
     glDrawArrays( GL_TRIANGLE_STRIP, 0, 4 );
-    
+
     // stop scaling
     if( scale < scale_lowerBound ) scale_factor = 1.0f;
-    
+
     // active
     if( alpha < .05f )
 	{
@@ -776,20 +776,20 @@ void YBokeh::render()
 		// HACK:
 		oscillate = false;
 	}
-    
+
     // disable
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState( GL_NORMAL_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
-    
+
     glPopMatrix();
-    
+
     // disable
     glDisable( GL_TEXTURE_2D );
     glDisable( GL_BLEND );
     // enable writing
     glDepthMask( GL_TRUE );
-    
+
 }
 
 
@@ -803,14 +803,14 @@ YFlarePool::YFlarePool( unsigned long capacity )
 {
     // zero out
     m_numActive = m_capacity = m_size = 0;
-    
+
     // allocate
     m_pool = new YFlare *[capacity];
     // sanity check
     if( !m_pool ) return;
     // zero
     memset( m_pool, 0, capacity * sizeof(YFlare *) );
-    
+
     // set
     m_capacity = capacity;
 }
@@ -830,17 +830,17 @@ YFlarePool::~YFlarePool()
         // delete the flares
         for( int i = 0; i < m_size; i++ )
             SAFE_DELETE( m_pool[i] );
-        
+
         // delete the influences
         for( int i = 0; i < influences.size(); i++ )
             SAFE_DELETE( influences[i] );
-        
+
         // delete
         SAFE_DELETE_ARRAY( m_pool );
-        
+
         // clear
         influences.clear();
-        
+
         // zero out
         m_numActive = 0;
         m_capacity = 0;
@@ -860,13 +860,13 @@ bool YFlarePool::add( YFlare * flare )
     // check
     if( m_size >= m_capacity )
         return false;
-    
+
     // deactivate
     flare->active = false;
-    
+
     // append
     m_pool[m_size++] = flare;
-    
+
     // done
     return true;
 }
@@ -896,16 +896,16 @@ YFlare * YFlarePool::spawn()
 
         // activate!
         f->activate();
-        
+
         // count
         m_numActive++;
-        
+
         // return
         return f;
     }
-    
+
     // return
-    return NULL;   
+    return NULL;
 }
 
 
@@ -920,18 +920,18 @@ YFlare * YFlarePool::spawn()
 //    int current = 1;
 //    YFlare * temp = NULL;
 //    int walker = 0;
-//    
+//
 //    while( current < size )
 //    {
 //        temp = array[current];
 //        walker = current - 1;
-//        
+//
 //        while( ( walker >= 0 ) && ( temp->loc.z < array[walker]->loc.z ) )
 //        {
 //            array[walker+1] = array[walker];
 //            walker--;
 //        }
-//        
+//
 //        array[walker+1] = temp;
 //        current++;
 //    }
@@ -945,7 +945,7 @@ YFlare * YFlarePool::spawn()
 // desc: ...
 //-----------------------------------------------------------------------------
 void YFlarePool::update( YTimeInterval dt )
-{    
+{
     // pack flares
     int count = 0;
     // iterate
@@ -953,7 +953,7 @@ void YFlarePool::update( YTimeInterval dt )
     {
         // update
         m_pool[i]->updateAll( dt );
-        
+
         // swap
         if( m_pool[i]->active == true )
         {
@@ -969,19 +969,19 @@ void YFlarePool::update( YTimeInterval dt )
             count++;
         }
     }
-    
+
     // update
     m_numActive = count;
-    
+
     // sort
     // sortZ( m_pool, count );
-    
+
     // update
     for( int j = 0; j < influences.size(); j++ )
     {
         influences[j]->update( dt );
     }
-    
+
     // loop over active and apply influence
     for( int i = 0; i < m_numActive; i++ )
     {
@@ -1021,15 +1021,15 @@ void YColumn::render()
 {
     // disable lighting
     glDisable( GL_LIGHTING );
-    
+
     // disable depth
     // glDisable( GL_DEPTH_TEST );
     // enable depth
     glEnable( GL_DEPTH_TEST );
-    
+
     // disable writing
     glDepthMask( GL_FALSE );
-    
+
     // enable blending
     glEnable( GL_BLEND );
     // blend function
@@ -1038,17 +1038,17 @@ void YColumn::render()
     glEnable( GL_TEXTURE_2D );
     // bind the texture
     glBindTexture( GL_TEXTURE_2D, texture );
-    
+
     glPushMatrix();
-    
+
     // enable
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_TEXTURE_COORD_ARRAY );
     glEnableClientState( GL_COLOR_ARRAY );
-    
+
     // HACK: fudge
     GLfloat fudge = 1.0f / numLayers;
-    
+
     // color
     // glColor4f( col.x * alpha, col.y * alpha, col.z * alpha, alpha );
     colorVals[0] = col.x * alpha * fudge;
@@ -1067,17 +1067,17 @@ void YColumn::render()
     colorVals[13] = colorVals[1];
     colorVals[14] = colorVals[2];
     colorVals[15] = colorVals[3];
-    
+
     // vertex
     glVertexPointer( 2, GL_FLOAT, 0, vertices );
     // texture coordinate
     glTexCoordPointer( 2, GL_FLOAT, 0, g_texCoords2 );
     // color
     glColorPointer( 4, GL_FLOAT, 0, colorVals );
-    
+
     // rotate
     glRotatef( rotation, 0, 1, 0 );
-    
+
     // draw layers
     for( int i = 0; i < numLayers; i++ )
     {
@@ -1091,13 +1091,13 @@ void YColumn::render()
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState( GL_TEXTURE_COORD_ARRAY );
     glDisableClientState( GL_COLOR_ARRAY );
-    
+
     glPopMatrix();
-    
+
     // disable
     glDisable( GL_TEXTURE_2D );
     glDisable( GL_BLEND );
-    
+
     // enable writing
     glDepthMask( GL_TRUE );
 }
@@ -1114,13 +1114,13 @@ void YColumn::update( YTimeInterval dt )
 {
     // NOTE: don't update super here
     // YFlare::update( dt );
-    
+
     // alpha
     // ge: (2012) commented this out, as this doesn't really work in some case,
     // for example when we are using dynamic time step for updates
     // alpha *= alpha_factor * MoGfx::getDesiredFrameRate() * dt;
     // scale *= scale_factor * MoGfx::getDesiredFrameRate() * dt;
-    
+
 //    // hmm... ge: what the poop
 //    if( alpha > 0.5 && !reactivating )
 //    {
@@ -1135,7 +1135,7 @@ void YColumn::update( YTimeInterval dt )
 //            alpha = 1.0;
 //            alpha_factor = 0.95;
 //        }
-//        
+//
 //        if( alpha_factor < 1.0 && alpha < 0.5 )
 //        {
 //            alpha = 0.5;
@@ -1146,13 +1146,13 @@ void YColumn::update( YTimeInterval dt )
 
     // hmm... ge: what does it mean?
     scale = alpha;
-    
+
     // increment
     rotation += rotationRate * 20 * dt;
-    
+
     // stop scaling
     if( scale < scale_lowerBound ) scale_factor = 1.0f;
-    
+
 //    // active
 //    if( alpha < .01f )
 //    {
@@ -1198,7 +1198,7 @@ void YColumn::reactivate()
 // name: g_squareVertices
 // desc: vertices for a cube
 //-----------------------------------------------------------------------------
-static const GLfloat g_squareVertices[] = 
+static const GLfloat g_squareVertices[] =
 {
     // FRONT
     -0.5f, -0.5f,  0.5f,
@@ -1239,7 +1239,7 @@ static const GLfloat g_squareVertices[] =
 // name: g_squareNormals
 // desc: normals for a cube
 //-----------------------------------------------------------------------------
-static const GLfloat g_squareNormals[] = 
+static const GLfloat g_squareNormals[] =
 {
     // FRONT
     0, 0, 1,
@@ -1302,10 +1302,10 @@ void YCube::render()
     glDrawArrays( GL_TRIANGLE_STRIP, 12, 4 );
     glDrawArrays( GL_TRIANGLE_STRIP, 16, 4 );
     glDrawArrays( GL_TRIANGLE_STRIP, 20, 4 );
-    
+
     // pop
     glPopMatrix();
-    
+
     // disable
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState( GL_NORMAL_ARRAY );
@@ -1333,20 +1333,20 @@ void YCube::update( YTimeInterval dt )
 //-----------------------------------------------------------------------------
 void YCubeOutline::render()
 {
-    
+
     // enable state
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_NORMAL_ARRAY );
-    
+
     // set vertex pointer
     glVertexPointer( 3, GL_FLOAT, 0, g_squareVertices );
     glNormalPointer( GL_FLOAT, 0, g_squareNormals );
-    
+
     // push
     glPushMatrix();
     // scale
     glScalef( size.value, size.value, size.value );
-    
+
     // draw it
     glDrawArrays( GL_TRIANGLE_STRIP, 0, 4 );
     glDrawArrays( GL_TRIANGLE_STRIP, 4, 4 );
@@ -1354,15 +1354,15 @@ void YCubeOutline::render()
     glDrawArrays( GL_TRIANGLE_STRIP, 12, 4 );
     glDrawArrays( GL_TRIANGLE_STRIP, 16, 4 );
     glDrawArrays( GL_TRIANGLE_STRIP, 20, 4 );
-    
+
     // color
     glColor4f( outlineColor.x, outlineColor.y, outlineColor.z, 1.0f );
     // draw outline
     glutWireCube( 1.025f );
-    
+
     // pop
     glPopMatrix();
-    
+
     // disable
     glDisableClientState( GL_VERTEX_ARRAY );
     glDisableClientState( GL_NORMAL_ARRAY );
@@ -1471,7 +1471,7 @@ void YCone::update( YTimeInterval dt )
     // interp
     base.interp( dt );
     height.interp( dt );
-    size.interp( dt );    
+    size.interp( dt );
 }
 
 
@@ -1491,7 +1491,7 @@ YPitchVortex::YPitchVortex()
 {
     m_currentIndex = 0;
     m_radius = 0;
-    
+
     m_singlePitchMode = false;
     m_on = true;
 }
@@ -1519,10 +1519,10 @@ void YPitchVortex::init( GLuint texture )
     // sanity check
     if( m_lightColumns.size() > 0 )
         return;
-    
+
     // column
     YColumn * c = NULL;
-    
+
     // add twelve light columns for pitch classes
     for( int i = 0; i < 12; i++ )
     {
@@ -1579,10 +1579,10 @@ const Vector3D & YPitchVortex::pitch2color( int pitch )
         ourColorMap.push_back( Vector3D( 1.0f, 1.0f, 0.0f ) );
         ourColorMap.push_back( Vector3D( 1.0f, 0.7f, 0.0f ) );
     }
-    
+
     // map pitch
     int actual = pitch % 12;
-    
+
     // return
     return ourColorMap[actual];
 }
@@ -1654,7 +1654,7 @@ void YPitchVortex::map( int pitch, float intensity )
     // sanity check
     if( m_lightColumns.size() == 0 || !m_on )
         return;
-    
+
     // deactivate all other pitch columns
     // in single pitch mode
     if( m_singlePitchMode )
@@ -1666,7 +1666,7 @@ void YPitchVortex::map( int pitch, float intensity )
             col->alpha = 0.0;
         }
     }
-    
+
     // previous index
     int prevIndex = m_currentIndex;
     // map pitch
@@ -1683,7 +1683,7 @@ void YPitchVortex::map( int pitch, float intensity )
     }
     // set goal
     m_currentAlphaGoal.update( intensity*1.75 );
-    
+
     //    // set alpha
     //    c->alpha += intensity;
     //    // clamp
@@ -1701,14 +1701,14 @@ void YPitchVortex::update( YTimeInterval dt )
 {
     // interp
     m_currentAlphaGoal.interp( dt );
-    
+
     // get column
     YColumn * c = m_lightColumns[m_currentIndex];
     // set alpha
     c->alpha = m_currentAlphaGoal.value;
     // clamp
     if( c->alpha > 1.0 ) c->alpha = 1.0f;
-    
+
     // iterate through columns
     for( int i = 0; i < 12; i++ )
     {
@@ -1731,9 +1731,9 @@ void YPitchVortex::render()
     // sanity check
     if( m_lightColumns.size() == 0 )
         return;
-    
+
     YColumn * c = NULL;
-    
+
     // iterate through columns
     for( int i = 0; i < 12; i++ )
     {
@@ -1802,16 +1802,16 @@ void YIris::init( unsigned int N, GLfloat outlineWidth )
     m_numBlades = N;
     // find angle between each adjacent piece
     double angle = 360.0 / N;
-    
+
     // rotation matrix (counter-clockwise)
     m_R[0] = ::cos( PI_OVER_180*angle );
     m_R[1] = ::sin( PI_OVER_180*angle );
     m_R[2] = -::sin( PI_OVER_180*angle );
     m_R[3] = ::cos( PI_OVER_180*angle );
-    
+
     // zero
     memset( m_verts, 0, sizeof(GLfloat) * 9 );
-    
+
     // outline width
     m_outlineWidth = outlineWidth;
 }
@@ -1820,7 +1820,7 @@ void YIris::init( unsigned int N, GLfloat outlineWidth )
 
 
 // vertices
-static GLfloat g_irisVerts[] = 
+static GLfloat g_irisVerts[] =
 {
     -.1f, -.1f, 0.04f,
     .14f, .3f, -0.02f,
@@ -1838,32 +1838,32 @@ void YIris::render()
 {
     // push
     glPushMatrix();
-    
+
     // enable
     glEnable( GL_DEPTH_TEST );
-    
+
     // enable
     glEnableClientState( GL_VERTEX_ARRAY );
     glEnableClientState( GL_NORMAL_ARRAY );
-    
+
     // vertex
     glVertexPointer( 3, GL_FLOAT, 0, g_irisVerts );
     // normal
     glNormalPointer( GL_FLOAT, 0, g_normals );
-    
+
     // find angle between each adjacent piece
     GLfloat angle = 360.0f / m_numBlades;
-    
+
     // position
     GLfloat pos = (1 - m_position.value);
-    
+
     // rotate the whole thing
     glRotatef( pos * 240, 0, 0, 1 );
     // set the blade length
     // g_irisVerts[7] = .5 + pos / 3.0f;
     // set the blade width
     g_irisVerts[3] = .14f * 36 / m_numBlades + pos*.2;
-    
+
     // color
     glColor4f( col.x, col.y, col.z, 1 );
     // enable lighting
@@ -1884,7 +1884,7 @@ void YIris::render()
         // pop
         glPopMatrix();
     }
-    
+
     // outline color
     glColor4f( .5, .5, .5, 1 );
     // translate a bit
@@ -1911,10 +1911,10 @@ void YIris::render()
         // pop
         glPopMatrix();
     }
-    
+
     // disable
     glDisableClientState( GL_VERTEX_ARRAY );
-    
+
     // pop
     glPopMatrix();
 }
@@ -1931,4 +1931,66 @@ void YIris::update( YTimeInterval dt )
     // std::cerr << "update: " << dtFixed << std::endl;
     // interp
     m_position.interp( dt );
+}
+
+
+
+//-----------------------------------------------------------------------------
+// name: YLine()
+// desc: ...
+//-----------------------------------------------------------------------------
+YLine::YLine()
+{
+    // zero
+    m_length = 0;
+}
+
+
+
+
+//-----------------------------------------------------------------------------
+// name: ~YIris()
+// desc: ...
+//-----------------------------------------------------------------------------
+YLine::~YLine()
+{
+}
+
+
+//-----------------------------------------------------------------------------
+// name: render()
+// desc: ...
+//-----------------------------------------------------------------------------
+void YLine::render()
+{
+    // push
+    glPushMatrix();
+
+    //glMatrixMode(GL_ORTHO);
+
+    // enable
+    glEnable( GL_DEPTH_TEST );
+
+    glLineWidth(4.0f);
+
+    glBegin(GL_LINE_STRIP);
+
+    // color
+    glColor4f( col.x, col.y, col.z, 1 );
+    //glColor4f( 1,1,1, 1 );
+
+    glVertex3f(-sca.x/2, -sca.y/2, -sca.z/2);
+    glVertex3f(sca.x/2, sca.y/2, sca.z/2);
+
+    glEnd();
+
+    // outline color
+    glColor4f( .5, .5, .5, 1 );
+    // translate a bit
+    glTranslatef( 0, 0, .001 );
+    // linewidth
+    glLineWidth(1.0f);
+
+    // pop
+    glPopMatrix();
 }

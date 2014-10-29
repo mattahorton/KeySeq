@@ -64,7 +64,7 @@ class YEntity
 {
 public:
     // constructor
-    YEntity() : parent(NULL), sca(1, 1, 1), col(1, 1, 1), alpha(1), 
+    YEntity() : parent(NULL), sca(1, 1, 1), col(1, 1, 1), alpha(1),
             active(true), selected(false), hidden(false) { }
 
 public:
@@ -75,7 +75,7 @@ public:
     // updates you need to do after render; this is somewhat of a hack,
     // needed by FX to get GL state in render before it can update
     virtual void updatePostRender( YTimeInterval dt ) {}
-    
+
 public:
     // updates with all children
     virtual void updateAll( YTimeInterval dt );
@@ -83,7 +83,7 @@ public:
     virtual void drawAll();
     // all post-render updates
     virtual void updateAllPostRender( YTimeInterval dt );
-    
+
 public:
     // add child
     void addChild( YEntity * child );
@@ -122,7 +122,7 @@ public:
     // active -- setting false disables update and display
     // of this node and all it's children
     bool active;
-    // hidden -- setting false disables display of 
+    // hidden -- setting false disables display of
     // this node only
     bool hidden;
     // selected?
@@ -135,13 +135,13 @@ protected:
     void applyTransforms();
     // pop
     void popTransforms();
-    
+
 protected: // never set these directly, always use addChild
     // parent in the scene graph
     YEntity * parent;
     // child nodes in the scene graph
     std::vector<YEntity *> children;
-    
+
 private:
     // make sure no subclasses are using the old
     // update function
@@ -159,7 +159,7 @@ class YText : public YEntity
 {
 public:
     YText( GLfloat initialAlpha = 1.0f );
-    
+
 public:
     // set text
     void set( const std::string & text );
@@ -175,7 +175,7 @@ public:
 public:
     // fade to a particular alpha
     virtual void fade( GLfloat _alpha, GLfloat slew = 1 );
-    
+
 public:
     virtual void update( YTimeInterval dt );
     virtual void render();
@@ -245,11 +245,11 @@ public:
 //{
 //public:
 //    YBox() : size( 1, 1, 1.0f ) { }
-//    
+//
 //public:
 //    virtual void update( YTimeInterval dt );
 //    virtual void render();
-//    
+//
 //public:
 //    Vector3D size;
 //    Vector3D dims;
@@ -267,11 +267,11 @@ class YSphere : public YEntity
 {
 public:
     YSphere() : size( 1, 1, 1.0f ), stacks(10), slices(10) { }
-    
+
 public:
     virtual void update( YTimeInterval dt );
     virtual void render();
-    
+
 public:
     Vector3D size;
     GLint slices;
@@ -288,14 +288,14 @@ public:
 class YCone : public YEntity
 {
 public:
-    YCone() : size( 1, 1, 1.0f ), base(1.0f, 1.0f, 1.0f), 
+    YCone() : size( 1, 1, 1.0f ), base(1.0f, 1.0f, 1.0f),
               height(1.0f, 1.0f, 1.0f), slices(10), stacks(10)
               { }
 
 public:
     virtual void update( YTimeInterval dt );
     virtual void render();
-    
+
 public:
     Vector3D size;
     Vector3D base;
@@ -318,7 +318,7 @@ public:
 
 public:
     // set flare attributes
-    void set( GLfloat _scale, GLfloat _alpha, GLfloat _scale_factor, 
+    void set( GLfloat _scale, GLfloat _alpha, GLfloat _scale_factor,
               GLfloat _alpha_factor, GLuint _texture );
     // activate!
     virtual void activate() { active = true; }
@@ -326,11 +326,11 @@ public:
     virtual bool isActive() const { return active; }
     // set alpha
     virtual void setAlpha( GLfloat _alpha ) { alpha = _alpha; }
-    
+
 public:
     virtual void update( YTimeInterval dt );
     virtual void render();
-    
+
 public:
     GLfloat scale;
     GLfloat scale_factor;
@@ -342,7 +342,7 @@ public:
 public:
     GLfloat half_width;
     GLfloat vertices[8];
-	
+
 public: // HACK:
 	GLboolean oscillate;
 	GLfloat osc_t;
@@ -368,9 +368,9 @@ public:
     void setBokehParams( GLfloat time, GLfloat freq, GLfloat time_step,
                          const Vector3D & xyz, const Vector3D & rgb );
     // set flare attributes
-    void set( GLfloat _scale, GLfloat _alpha, GLfloat _scale_factor, 
+    void set( GLfloat _scale, GLfloat _alpha, GLfloat _scale_factor,
               GLfloat _alpha_factor, GLuint _texture );
-    
+
     // set alpha
     virtual void setAlpha( GLfloat _alpha ) { alpha = alpha_actual = _alpha; }
     // virtual void setAlpha( GLfloat _alpha ) { iAlpha.update( _alpha ); alpha_actual = _alpha; }
@@ -382,7 +382,7 @@ public:
     // slew
     iSlew3D iRGB;
     iSlew3D iLoc;
-    
+
 protected:
     // scale
     float scale_actual;
@@ -425,21 +425,21 @@ class YFlarePool : public YEntity
 public:
     YFlarePool( unsigned long capacity );
     virtual ~YFlarePool();
-    
+
 public:
     // add a flare to pool (subject to capacity)
     // (the flare will be memory-managed by the pool)
     bool add( YFlare * flare );
-    
+
 public:
     // spawn a flare (if available)
     YFlare * spawn();
-    
+
     // add influence to be applied to each flare
     // (the influence will be memory-managed by the pool)
     void addInfluence( YFlareInfluence * influence )
     { influences.push_back( influence ); }
-    
+
 public:
     // get the capacity
     unsigned long getCapacity() const { return m_capacity; }
@@ -451,7 +451,7 @@ public:
 public:
     virtual void update( YTimeInterval dt );
     virtual void render();
-    
+
 public:
     // num active
     unsigned long m_numActive;
@@ -484,24 +484,24 @@ public:
         height = _height;
         // compute
         compute();
-                
+
         reactivating = false;
     }
-    
+
     // update rotation rate
     virtual void updateRotationRate( GLfloat rate )
     {
         // set
         rotationRate = rate;
     }
-    
+
     // update rotation value
     virtual void updateRotation( GLfloat r )
     {
         // set
         rotation = r;
     }
-    
+
     // update
     virtual void updateHeight( GLfloat _height )
     {
@@ -510,7 +510,7 @@ public:
         // compute
         compute();
     }
-    
+
     // update
     virtual void updateWidth( GLfloat width )
     {
@@ -519,7 +519,7 @@ public:
         // compute
         compute();
     }
-    
+
     // update
     virtual void updateTaper( GLfloat _taper, GLfloat _taper2 )
     {
@@ -529,13 +529,13 @@ public:
         // compute
         compute();
     }
-    
+
 public:
     virtual void update( YTimeInterval dt );
     virtual void render();
     virtual void activate();
     void reactivate();
-    
+
 public:
     // num layers
     int numLayers;
@@ -552,10 +552,10 @@ public:
     GLfloat taper2;
     // color array
     GLfloat colorVals[16];
-    
+
 protected:
     virtual void compute()
-    { 
+    {
         // generate vertices
         vertices[0] = -half_width * taper;
         vertices[1] = 0;
@@ -581,7 +581,7 @@ class YPitchVortex : public YEntity
 public:
     YPitchVortex();
     virtual ~YPitchVortex();
-    
+
 public:
     virtual void init( GLuint texture );
     virtual void setRadius( GLfloat radius ) { m_radius = radius; }
@@ -599,11 +599,11 @@ public:
 public:
     virtual void update( YTimeInterval dt );
     virtual void render();
-    
+
 public:
     static const Vector3D & pitch2color( int pitch );
     static const Vector3D & pitch2color_f( float pitch ); // rounds to nearest int
-    
+
 protected:
     // array of light columns
     std::vector<YColumn *> m_lightColumns;
@@ -613,13 +613,13 @@ protected:
     Vector3D m_currentAlphaGoal;
     // radius
     GLfloat m_radius;
-    
-    // in single pitch mode, only one column is 
+
+    // in single pitch mode, only one column is
     // active at a time for gameplay
     bool m_singlePitchMode;
     // on
     bool m_on;
-    
+
 protected:
     // color map for pitches
     static std::vector<Vector3D> ourColorMap;
@@ -637,14 +637,14 @@ class YIris : public YEntity
 public:
     YIris();
     virtual ~YIris();
-    
+
 public:
     void init( unsigned int N, GLfloat outlineWidth = 1.0f );
-    
+
 public:
     virtual void update( YTimeInterval dt );
     virtual void render();
-    
+
 public:
     // number of blades
     GLuint m_numBlades;
@@ -656,6 +656,28 @@ public:
     GLfloat m_verts[9];
     // outline width
     GLfloat m_outlineWidth;
+};
+
+
+//-----------------------------------------------------------------------------
+// name: class YLine
+// desc: ...
+//-----------------------------------------------------------------------------
+class YLine : public YEntity
+{
+public:
+    YLine();
+    virtual ~YLine();
+
+public:
+
+
+public:
+    virtual void render();
+
+public:
+    // length of line
+    GLuint m_length;
 };
 
 

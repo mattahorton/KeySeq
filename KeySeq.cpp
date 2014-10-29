@@ -260,11 +260,27 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'q':
             step = Globals::steps.at(0);
             step->loc.y += 0.5;
+
+            if (Globals::octaveOffsets.at(0) < 5) {
+              Globals::octaveOffsets.at(0) =
+                Globals::octaveOffsets.at(0)+1;
+            } else {
+              Globals::octaveOffsets.at(0) = 5;
+            }
+
             break;
         case 'Z':
         case 'z':
             step = Globals::steps.at(0);
             step->loc.y -= 0.5;
+
+            if (Globals::octaveOffsets.at(0) < 5) {
+              Globals::octaveOffsets.at(0) =
+                Globals::octaveOffsets.at(0)-1;
+            } else {
+              Globals::octaveOffsets.at(0) = -5;
+            }
+
             break;
         case 'S':
         case 's':
@@ -276,11 +292,27 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'w':
             step = Globals::steps.at(1);
             step->loc.y += 0.5;
+
+            if (Globals::octaveOffsets.at(1) < 5) {
+              Globals::octaveOffsets.at(1) =
+                Globals::octaveOffsets.at(1)+1;
+            } else {
+              Globals::octaveOffsets.at(1) = 5;
+            }
+
             break;
         case 'X':
         case 'x':
             step = Globals::steps.at(1);
             step->loc.y -= 0.5;
+
+            if (Globals::octaveOffsets.at(1) > 5) {
+              Globals::octaveOffsets.at(1) =
+                Globals::octaveOffsets.at(1)-1;
+            } else {
+              Globals::octaveOffsets.at(1) = -5;
+            }
+
             break;
         case 'D':
         case 'd':
@@ -292,11 +324,27 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'e':
             step = Globals::steps.at(2);
             step->loc.y += 0.5;
+
+            if (Globals::octaveOffsets.at(2) < 5) {
+              Globals::octaveOffsets.at(2) =
+                Globals::octaveOffsets.at(2)+1;
+            } else {
+              Globals::octaveOffsets.at(2) = 5;
+            }
+
             break;
         case 'C':
         case 'c':
             step = Globals::steps.at(2);
             step->loc.y -= 0.5;
+
+            if (Globals::octaveOffsets.at(2) > 5) {
+              Globals::octaveOffsets.at(2) =
+                Globals::octaveOffsets.at(2)-1;
+            } else {
+              Globals::octaveOffsets.at(2) = -5;
+            }
+
             break;
         case 'F':
         case 'f':
@@ -308,11 +356,27 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'r':
             step = Globals::steps.at(3);
             step->loc.y += 0.5;
+
+            if (Globals::octaveOffsets.at(3) < 5) {
+              Globals::octaveOffsets.at(3) =
+                Globals::octaveOffsets.at(3)+1;
+            } else {
+              Globals::octaveOffsets.at(3) = 5;
+            }
+
             break;
         case 'V':
         case 'v':
             step = Globals::steps.at(3);
             step->loc.y -= 0.5;
+
+            if (Globals::octaveOffsets.at(3) > 5) {
+              Globals::octaveOffsets.at(3) =
+                Globals::octaveOffsets.at(3)-1;
+            } else {
+              Globals::octaveOffsets.at(3) = -5;
+            }
+
             break;
         case 'J':
         case 'j':
@@ -324,11 +388,27 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'u':
             step = Globals::steps.at(4);
             step->loc.y += 0.5;
+
+            if (Globals::octaveOffsets.at(4) < 5) {
+              Globals::octaveOffsets.at(4) =
+                Globals::octaveOffsets.at(4)+1;
+            } else {
+              Globals::octaveOffsets.at(4) = 5;
+            }
+
             break;
         case 'M':
         case 'm':
             step = Globals::steps.at(4);
             step->loc.y -= 0.5;
+
+            if (Globals::octaveOffsets.at(4) > 5) {
+              Globals::octaveOffsets.at(4) =
+                Globals::octaveOffsets.at(4)-1;
+            } else {
+              Globals::octaveOffsets.at(4) = -5;
+            }
+
             break;
         case 'K':
         case 'k':
@@ -341,11 +421,27 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'i':
             step = Globals::steps.at(5);
             step->loc.y += 0.5;
+
+            if (Globals::octaveOffsets.at(5) < 5) {
+              Globals::octaveOffsets.at(5) =
+                Globals::octaveOffsets.at(5)+1;
+            } else {
+              Globals::octaveOffsets.at(5) = 5;
+            }
+
             break;
         case '<':
         case ',':
             step = Globals::steps.at(5);
             step->loc.y -= 0.5;
+
+            if (Globals::octaveOffsets.at(5) > 5) {
+              Globals::octaveOffsets.at(5) =
+                Globals::octaveOffsets.at(5)-1;
+            } else {
+              Globals::octaveOffsets.at(5) = -5;
+            }
+
             break;
         case 'L':
         case 'l':
@@ -357,11 +453,27 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'o':
             step = Globals::steps.at(6);
             step->loc.y += 0.5;
+
+            if (Globals::octaveOffsets.at(6) < 5) {
+              Globals::octaveOffsets.at(6) =
+                Globals::octaveOffsets.at(6)+1;
+            } else {
+              Globals::octaveOffsets.at(6) = 5;
+            }
+
             break;
         case '>':
         case '.':
             step = Globals::steps.at(6);
             step->loc.y -= 0.5;
+
+            if (Globals::octaveOffsets.at(6) > 5) {
+              Globals::octaveOffsets.at(6) =
+                Globals::octaveOffsets.at(6)-1;
+            } else {
+              Globals::octaveOffsets.at(6) = -5;
+            }
+
             break;
         case ':':
         case ';':
@@ -373,11 +485,27 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'p':
             step = Globals::steps.at(7);
             step->loc.y += 0.5;
+
+            if (Globals::octaveOffsets.at(7) < 5) {
+              Globals::octaveOffsets.at(7) =
+                Globals::octaveOffsets.at(7)+1;
+            } else {
+              Globals::octaveOffsets.at(7) = 5;
+            }
+
             break;
         case '?':
         case '/':
             step = Globals::steps.at(7);
             step->loc.y -= 0.5;
+
+            if (Globals::octaveOffsets.at(7) > 5) {
+              Globals::octaveOffsets.at(7) =
+                Globals::octaveOffsets.at(7)-1;
+            } else {
+              Globals::octaveOffsets.at(7) = -5;
+            }
+
             break;
     }
 
@@ -391,21 +519,21 @@ void keyboardFunc( unsigned char key, int x, int y )
 //-----------------------------------------------------------------------------
 void specialFunc(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
-      if (Globals::selectedStep != -1) {
-        if (Globals::octaveOffsets.at(Globals::selectedStep) < 5) {
-          Globals::octaveOffsets.at(Globals::selectedStep) =
-            Globals::octaveOffsets.at(Globals::selectedStep)+1;
-        }
-      }
+      // if (Globals::selectedStep != -1) {
+      //   if (Globals::octaveOffsets.at(Globals::selectedStep) < 5) {
+      //     Globals::octaveOffsets.at(Globals::selectedStep) =
+      //       Globals::octaveOffsets.at(Globals::selectedStep)+1;
+      //   }
+      // }
     } else if (key == GLUT_KEY_DOWN) {
-      if (Globals::selectedStep != -1) {
-        if (Globals::octaveOffsets.at(Globals::selectedStep) > -5) {
-          Globals::octaveOffsets.at(Globals::selectedStep) =
-            Globals::octaveOffsets.at(Globals::selectedStep)-1;
-        } else {
-          Globals::octaveOffsets.at(Globals::selectedStep) = -5;
-        }
-      }
+      // if (Globals::selectedStep != -1) {
+      //   if (Globals::octaveOffsets.at(Globals::selectedStep) > -5) {
+      //     Globals::octaveOffsets.at(Globals::selectedStep) =
+      //       Globals::octaveOffsets.at(Globals::selectedStep)-1;
+      //   } else {
+      //     Globals::octaveOffsets.at(Globals::selectedStep) = -5;
+      //   }
+      // }
     } else if (key == GLUT_KEY_RIGHT) {
         //Globals::cube->size = Globals::cube->size + Vector3D::Vector3D(2,5,6);
     } else if (key == GLUT_KEY_LEFT) {
@@ -487,6 +615,9 @@ void displayFunc( )
 //-----------------------------------------------------------------------------
 void initSeq() {
 
+    YEntity * seq = new YEntity();
+    Globals::sim->root().addChild(seq);
+
     for (int i = 0; i < 8; i++) {
         YCubeOutline * cube = new YCubeOutline();
         cube->loc = Vector3D::Vector3D((i-6.0)+(i*.7),0,0);
@@ -495,7 +626,15 @@ void initSeq() {
         cube->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
         cube->ori = Vector3D::Vector3D(0,0,0);
 
-        Globals::sim->root().addChild(cube);
+        YLine * line = new YLine();
+        line->loc = Vector3D::Vector3D((i-6.0)+(i*.7),0,0);
+        line->sca = Vector3D::Vector3D(0,2.6,0);
+        line->col = Vector3D::Vector3D(0.655, 0.859, 0.859);
+        line->ori = Vector3D::Vector3D(0,0,0);
+
+
+        seq->addChild(cube);
+        seq->addChild(line);
         Globals::steps.push_back(cube);
     }
 }
