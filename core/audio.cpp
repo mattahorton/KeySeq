@@ -131,8 +131,8 @@ bool audio_init( unsigned int srate, unsigned int frameSize, unsigned channels )
 
     g_synth = new YFluidSynth();
     g_synth->init( srate, 32 );
-    g_synth->load( "data/sfonts/rocking8m11e.sf2", "" );
-    g_synth->programChange( 0, 4 );
+    g_synth->load( "data/sfonts/jRhodes3c-stereo.sf2", "" );
+    g_synth->programChange( 0, 0 );
 
     // allocate echo
     g_echo = new YEcho( srate );
