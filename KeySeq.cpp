@@ -259,11 +259,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'Q':
         case 'q':
             step = Globals::steps.at(0);
-            step->loc.y += 0.5;
 
             if (Globals::octaveOffsets.at(0) < 5) {
-              Globals::octaveOffsets.at(0) =
-                Globals::octaveOffsets.at(0)+1;
+              Globals::octaveOffsets.at(0) = Globals::octaveOffsets.at(0)+1;
+              step->loc.y += 0.5;
             } else {
               Globals::octaveOffsets.at(0) = 5;
             }
@@ -272,11 +271,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'Z':
         case 'z':
             step = Globals::steps.at(0);
-            step->loc.y -= 0.5;
 
-            if (Globals::octaveOffsets.at(0) < 5) {
-              Globals::octaveOffsets.at(0) =
-                Globals::octaveOffsets.at(0)-1;
+            if (Globals::octaveOffsets.at(0) > -5) {
+              Globals::octaveOffsets.at(0) = Globals::octaveOffsets.at(0)-1;
+              step->loc.y -= 0.5;
             } else {
               Globals::octaveOffsets.at(0) = -5;
             }
@@ -291,11 +289,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'W':
         case 'w':
             step = Globals::steps.at(1);
-            step->loc.y += 0.5;
 
             if (Globals::octaveOffsets.at(1) < 5) {
-              Globals::octaveOffsets.at(1) =
-                Globals::octaveOffsets.at(1)+1;
+              Globals::octaveOffsets.at(1) = Globals::octaveOffsets.at(1)+1;
+              step->loc.y += 0.5;
             } else {
               Globals::octaveOffsets.at(1) = 5;
             }
@@ -304,11 +301,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'X':
         case 'x':
             step = Globals::steps.at(1);
-            step->loc.y -= 0.5;
 
-            if (Globals::octaveOffsets.at(1) > 5) {
-              Globals::octaveOffsets.at(1) =
-                Globals::octaveOffsets.at(1)-1;
+            if (Globals::octaveOffsets.at(1) > -5) {
+              Globals::octaveOffsets.at(1) = Globals::octaveOffsets.at(1)-1;
+              step->loc.y -= 0.5;
             } else {
               Globals::octaveOffsets.at(1) = -5;
             }
@@ -323,11 +319,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'E':
         case 'e':
             step = Globals::steps.at(2);
-            step->loc.y += 0.5;
 
             if (Globals::octaveOffsets.at(2) < 5) {
-              Globals::octaveOffsets.at(2) =
-                Globals::octaveOffsets.at(2)+1;
+              Globals::octaveOffsets.at(2) = Globals::octaveOffsets.at(2)+1;
+              step->loc.y += 0.5;
             } else {
               Globals::octaveOffsets.at(2) = 5;
             }
@@ -336,11 +331,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'C':
         case 'c':
             step = Globals::steps.at(2);
-            step->loc.y -= 0.5;
 
-            if (Globals::octaveOffsets.at(2) > 5) {
-              Globals::octaveOffsets.at(2) =
-                Globals::octaveOffsets.at(2)-1;
+            if (Globals::octaveOffsets.at(2) > -5) {
+              Globals::octaveOffsets.at(2) = Globals::octaveOffsets.at(2)-1;
+              step->loc.y -= 0.5;
             } else {
               Globals::octaveOffsets.at(2) = -5;
             }
@@ -355,11 +349,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'R':
         case 'r':
             step = Globals::steps.at(3);
-            step->loc.y += 0.5;
 
             if (Globals::octaveOffsets.at(3) < 5) {
-              Globals::octaveOffsets.at(3) =
-                Globals::octaveOffsets.at(3)+1;
+              Globals::octaveOffsets.at(3) = Globals::octaveOffsets.at(3)+1;
+              step->loc.y += 0.5;
             } else {
               Globals::octaveOffsets.at(3) = 5;
             }
@@ -368,11 +361,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'V':
         case 'v':
             step = Globals::steps.at(3);
-            step->loc.y -= 0.5;
 
-            if (Globals::octaveOffsets.at(3) > 5) {
-              Globals::octaveOffsets.at(3) =
-                Globals::octaveOffsets.at(3)-1;
+            if (Globals::octaveOffsets.at(3) > -5) {
+              Globals::octaveOffsets.at(3) = Globals::octaveOffsets.at(3)-1;
+              step->loc.y -= 0.5;
             } else {
               Globals::octaveOffsets.at(3) = -5;
             }
@@ -387,11 +379,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'U':
         case 'u':
             step = Globals::steps.at(4);
-            step->loc.y += 0.5;
 
             if (Globals::octaveOffsets.at(4) < 5) {
-              Globals::octaveOffsets.at(4) =
-                Globals::octaveOffsets.at(4)+1;
+              Globals::octaveOffsets.at(4) = Globals::octaveOffsets.at(4)+1;
+              step->loc.y += 0.5;
             } else {
               Globals::octaveOffsets.at(4) = 5;
             }
@@ -400,11 +391,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'M':
         case 'm':
             step = Globals::steps.at(4);
-            step->loc.y -= 0.5;
 
-            if (Globals::octaveOffsets.at(4) > 5) {
-              Globals::octaveOffsets.at(4) =
-                Globals::octaveOffsets.at(4)-1;
+            if (Globals::octaveOffsets.at(4) > -5) {
+              Globals::octaveOffsets.at(4) = Globals::octaveOffsets.at(4)-1;
+                step->loc.y -= 0.5;
             } else {
               Globals::octaveOffsets.at(4) = -5;
             }
@@ -420,11 +410,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'I':
         case 'i':
             step = Globals::steps.at(5);
-            step->loc.y += 0.5;
 
             if (Globals::octaveOffsets.at(5) < 5) {
-              Globals::octaveOffsets.at(5) =
-                Globals::octaveOffsets.at(5)+1;
+              Globals::octaveOffsets.at(5) = Globals::octaveOffsets.at(5)+1;
+                step->loc.y += 0.5;
             } else {
               Globals::octaveOffsets.at(5) = 5;
             }
@@ -433,11 +422,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case '<':
         case ',':
             step = Globals::steps.at(5);
-            step->loc.y -= 0.5;
 
-            if (Globals::octaveOffsets.at(5) > 5) {
-              Globals::octaveOffsets.at(5) =
-                Globals::octaveOffsets.at(5)-1;
+            if (Globals::octaveOffsets.at(5) > -5) {
+              Globals::octaveOffsets.at(5) = Globals::octaveOffsets.at(5)-1;
+              step->loc.y -= 0.5;
             } else {
               Globals::octaveOffsets.at(5) = -5;
             }
@@ -452,11 +440,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'O':
         case 'o':
             step = Globals::steps.at(6);
-            step->loc.y += 0.5;
 
             if (Globals::octaveOffsets.at(6) < 5) {
-              Globals::octaveOffsets.at(6) =
-                Globals::octaveOffsets.at(6)+1;
+              Globals::octaveOffsets.at(6) = Globals::octaveOffsets.at(6)+1;
+              step->loc.y += 0.5;
             } else {
               Globals::octaveOffsets.at(6) = 5;
             }
@@ -465,11 +452,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case '>':
         case '.':
             step = Globals::steps.at(6);
-            step->loc.y -= 0.5;
 
-            if (Globals::octaveOffsets.at(6) > 5) {
-              Globals::octaveOffsets.at(6) =
-                Globals::octaveOffsets.at(6)-1;
+            if (Globals::octaveOffsets.at(6) > -5) {
+              Globals::octaveOffsets.at(6) = Globals::octaveOffsets.at(6)-1;
+                step->loc.y -= 0.5;
             } else {
               Globals::octaveOffsets.at(6) = -5;
             }
@@ -484,11 +470,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'P':
         case 'p':
             step = Globals::steps.at(7);
-            step->loc.y += 0.5;
 
             if (Globals::octaveOffsets.at(7) < 5) {
-              Globals::octaveOffsets.at(7) =
-                Globals::octaveOffsets.at(7)+1;
+              Globals::octaveOffsets.at(7) = Globals::octaveOffsets.at(7)+1;
+              step->loc.y += 0.5;
             } else {
               Globals::octaveOffsets.at(7) = 5;
             }
@@ -497,11 +482,10 @@ void keyboardFunc( unsigned char key, int x, int y )
         case '?':
         case '/':
             step = Globals::steps.at(7);
-            step->loc.y -= 0.5;
 
-            if (Globals::octaveOffsets.at(7) > 5) {
-              Globals::octaveOffsets.at(7) =
-                Globals::octaveOffsets.at(7)-1;
+            if (Globals::octaveOffsets.at(7) > -5) {
+              Globals::octaveOffsets.at(7) = Globals::octaveOffsets.at(7)-1;
+              step->loc.y -= 0.5;
             } else {
               Globals::octaveOffsets.at(7) = -5;
             }
