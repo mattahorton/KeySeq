@@ -55,6 +55,7 @@ public:
 
     // Midi globals
     static std::vector<int> octaveOffsets;
+    static std::vector<bool> stepBools;
 
     // path
     static std::string path;

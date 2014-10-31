@@ -31,6 +31,7 @@ int Globals::playingStep = 0;
 
 // Midi globals
 std::vector<int> Globals::octaveOffsets;
+std::vector<bool> Globals::stepBools;
 
 // Window size globals
 GLsizei Globals::windowWidth = DEFAULT_WINDOW_WIDTH;

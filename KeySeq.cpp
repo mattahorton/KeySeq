@@ -136,6 +136,7 @@ int main( int argc, char ** argv )
     // Midi setup
     for (int i = 0; i < Globals::steps.size(); i++) {
       Globals::octaveOffsets.push_back(0);
+      Globals::stepBools.push_back(false);
     }
 
     // Start Audio
@@ -227,11 +228,16 @@ void keyboardFunc( unsigned char key, int x, int y )
 {
     int prev;
     YEntity * step;
+    bool currentVal;
 
     switch( key )
     {
         case 27: // escape
             exit(1);
+            break;
+        case 13: // enter
+            currentVal = Globals::stepBools.at(Globals::selectedStep);
+            if(Globals::selectedStep != -1) Globals::stepBools.at(Globals::selectedStep) = !currentVal;
             break;
         case 'G':
         case 'g': // toggle fullscreen
@@ -657,7 +663,7 @@ void playStep(int prev, int idx){
     nextStep = Globals::steps.at(idx);
     nextStep->col.set(0.655, 0.859, 0.859);
 
-    play(60+12*Globals::octaveOffsets.at(idx),100);
+    if(Globals::stepBools.at(idx)) play(60+12*Globals::octaveOffsets.at(idx),100);
 }
 
 //-----------------------------------------------------------------------------
