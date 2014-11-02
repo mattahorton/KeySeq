@@ -24,6 +24,7 @@ Mediator * Globals::mediator = NULL;
 
 // Steps data structure
 std::vector<YEntity *> Globals::steps;
+std::vector<YEntity *> Globals::lines;
 // Steps properties
 int Globals::numSteps = 8;
 int Globals::selectedStep = -1;

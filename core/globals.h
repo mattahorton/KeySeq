@@ -50,6 +50,7 @@ public:
     static Mediator * mediator;
 
     static std::vector<YEntity *> steps;
+    static std::vector<YEntity *> lines;
     static int numSteps;
     static int selectedStep;
     static int playingStep;

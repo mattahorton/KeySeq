@@ -246,7 +246,15 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 13: // enter
             currentVal = Globals::stepBools.at(Globals::selectedStep);
-            if(Globals::selectedStep != -1) Globals::stepBools.at(Globals::selectedStep) = !currentVal;
+            if(Globals::selectedStep != -1) {
+              Globals::stepBools.at(Globals::selectedStep) = !currentVal;
+              if (Globals::stepBools.at(Globals::selectedStep)) {
+                Globals::lines.at(Globals::selectedStep)->col.set(0.953f, 0.525f, 0.188f);
+              } else {
+                Globals::lines.at(Globals::selectedStep)->col.set(0.412, 0.824, 0.906);;
+              }
+
+            }
             break;
         case 'G':
         case 'g': // toggle fullscreen
@@ -707,6 +715,7 @@ void initSeq() {
         seq->addChild(cube);
         seq->addChild(line);
         Globals::steps.push_back(cube);
+        Globals::lines.push_back(line);
     }
 }
 
@@ -717,10 +726,11 @@ void initSeq() {
 void selectStep(int prev, int idx){
     YEntity * step = NULL;
     YEntity * nextStep = NULL;
+    YEntity * line = NULL;
 
     if (!(prev == -1)) {
         step = Globals::steps.at(prev);
-        step->col = Vector3D::Vector3D(0.412, 0.824, 0.906);
+        step->col.set(0.412, 0.824, 0.906);
     }
     nextStep = Globals::steps.at(idx);
     nextStep->col.set(0.953f, 0.525f, 0.188f);
