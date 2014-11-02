@@ -135,7 +135,7 @@ int main( int argc, char ** argv )
 
     // Midi setup
     for (int i = 0; i < Globals::steps.size(); i++) {
-      Globals::octaveOffsets.push_back(0);
+      Globals::octaveOffsets[Globals::currentTrack].push_back(0);
       Globals::stepBools.push_back(false);
     }
 
@@ -266,11 +266,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'q':
             step = Globals::steps.at(0);
 
-            if (Globals::octaveOffsets.at(0) < 5) {
-              Globals::octaveOffsets.at(0) = Globals::octaveOffsets.at(0)+1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(0) < 5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(0) = Globals::octaveOffsets[Globals::currentTrack].at(0)+1;
               step->loc.y += 0.5;
             } else {
-              Globals::octaveOffsets.at(0) = 5;
+              Globals::octaveOffsets[Globals::currentTrack].at(0) = 5;
             }
 
             break;
@@ -278,11 +278,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'z':
             step = Globals::steps.at(0);
 
-            if (Globals::octaveOffsets.at(0) > -5) {
-              Globals::octaveOffsets.at(0) = Globals::octaveOffsets.at(0)-1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(0) > -5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(0) = Globals::octaveOffsets[Globals::currentTrack].at(0)-1;
               step->loc.y -= 0.5;
             } else {
-              Globals::octaveOffsets.at(0) = -5;
+              Globals::octaveOffsets[Globals::currentTrack].at(0) = -5;
             }
 
             break;
@@ -296,11 +296,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'w':
             step = Globals::steps.at(1);
 
-            if (Globals::octaveOffsets.at(1) < 5) {
-              Globals::octaveOffsets.at(1) = Globals::octaveOffsets.at(1)+1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(1) < 5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(1) = Globals::octaveOffsets[Globals::currentTrack].at(1)+1;
               step->loc.y += 0.5;
             } else {
-              Globals::octaveOffsets.at(1) = 5;
+              Globals::octaveOffsets[Globals::currentTrack].at(1) = 5;
             }
 
             break;
@@ -308,11 +308,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'x':
             step = Globals::steps.at(1);
 
-            if (Globals::octaveOffsets.at(1) > -5) {
-              Globals::octaveOffsets.at(1) = Globals::octaveOffsets.at(1)-1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(1) > -5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(1) = Globals::octaveOffsets[Globals::currentTrack].at(1)-1;
               step->loc.y -= 0.5;
             } else {
-              Globals::octaveOffsets.at(1) = -5;
+              Globals::octaveOffsets[Globals::currentTrack].at(1) = -5;
             }
 
             break;
@@ -326,11 +326,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'e':
             step = Globals::steps.at(2);
 
-            if (Globals::octaveOffsets.at(2) < 5) {
-              Globals::octaveOffsets.at(2) = Globals::octaveOffsets.at(2)+1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(2) < 5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(2) = Globals::octaveOffsets[Globals::currentTrack].at(2)+1;
               step->loc.y += 0.5;
             } else {
-              Globals::octaveOffsets.at(2) = 5;
+              Globals::octaveOffsets[Globals::currentTrack].at(2) = 5;
             }
 
             break;
@@ -338,11 +338,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'c':
             step = Globals::steps.at(2);
 
-            if (Globals::octaveOffsets.at(2) > -5) {
-              Globals::octaveOffsets.at(2) = Globals::octaveOffsets.at(2)-1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(2) > -5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(2) = Globals::octaveOffsets[Globals::currentTrack].at(2)-1;
               step->loc.y -= 0.5;
             } else {
-              Globals::octaveOffsets.at(2) = -5;
+              Globals::octaveOffsets[Globals::currentTrack].at(2) = -5;
             }
 
             break;
@@ -356,11 +356,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'r':
             step = Globals::steps.at(3);
 
-            if (Globals::octaveOffsets.at(3) < 5) {
-              Globals::octaveOffsets.at(3) = Globals::octaveOffsets.at(3)+1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(3) < 5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(3) = Globals::octaveOffsets[Globals::currentTrack].at(3)+1;
               step->loc.y += 0.5;
             } else {
-              Globals::octaveOffsets.at(3) = 5;
+              Globals::octaveOffsets[Globals::currentTrack].at(3) = 5;
             }
 
             break;
@@ -368,11 +368,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'v':
             step = Globals::steps.at(3);
 
-            if (Globals::octaveOffsets.at(3) > -5) {
-              Globals::octaveOffsets.at(3) = Globals::octaveOffsets.at(3)-1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(3) > -5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(3) = Globals::octaveOffsets[Globals::currentTrack].at(3)-1;
               step->loc.y -= 0.5;
             } else {
-              Globals::octaveOffsets.at(3) = -5;
+              Globals::octaveOffsets[Globals::currentTrack].at(3) = -5;
             }
 
             break;
@@ -386,11 +386,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'u':
             step = Globals::steps.at(4);
 
-            if (Globals::octaveOffsets.at(4) < 5) {
-              Globals::octaveOffsets.at(4) = Globals::octaveOffsets.at(4)+1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(4) < 5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(4) = Globals::octaveOffsets[Globals::currentTrack].at(4)+1;
               step->loc.y += 0.5;
             } else {
-              Globals::octaveOffsets.at(4) = 5;
+              Globals::octaveOffsets[Globals::currentTrack].at(4) = 5;
             }
 
             break;
@@ -398,11 +398,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'm':
             step = Globals::steps.at(4);
 
-            if (Globals::octaveOffsets.at(4) > -5) {
-              Globals::octaveOffsets.at(4) = Globals::octaveOffsets.at(4)-1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(4) > -5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(4) = Globals::octaveOffsets[Globals::currentTrack].at(4)-1;
                 step->loc.y -= 0.5;
             } else {
-              Globals::octaveOffsets.at(4) = -5;
+              Globals::octaveOffsets[Globals::currentTrack].at(4) = -5;
             }
 
             break;
@@ -417,11 +417,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'i':
             step = Globals::steps.at(5);
 
-            if (Globals::octaveOffsets.at(5) < 5) {
-              Globals::octaveOffsets.at(5) = Globals::octaveOffsets.at(5)+1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(5) < 5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(5) = Globals::octaveOffsets[Globals::currentTrack].at(5)+1;
                 step->loc.y += 0.5;
             } else {
-              Globals::octaveOffsets.at(5) = 5;
+              Globals::octaveOffsets[Globals::currentTrack].at(5) = 5;
             }
 
             break;
@@ -429,11 +429,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case ',':
             step = Globals::steps.at(5);
 
-            if (Globals::octaveOffsets.at(5) > -5) {
-              Globals::octaveOffsets.at(5) = Globals::octaveOffsets.at(5)-1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(5) > -5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(5) = Globals::octaveOffsets[Globals::currentTrack].at(5)-1;
               step->loc.y -= 0.5;
             } else {
-              Globals::octaveOffsets.at(5) = -5;
+              Globals::octaveOffsets[Globals::currentTrack].at(5) = -5;
             }
 
             break;
@@ -447,11 +447,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'o':
             step = Globals::steps.at(6);
 
-            if (Globals::octaveOffsets.at(6) < 5) {
-              Globals::octaveOffsets.at(6) = Globals::octaveOffsets.at(6)+1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(6) < 5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(6) = Globals::octaveOffsets[Globals::currentTrack].at(6)+1;
               step->loc.y += 0.5;
             } else {
-              Globals::octaveOffsets.at(6) = 5;
+              Globals::octaveOffsets[Globals::currentTrack].at(6) = 5;
             }
 
             break;
@@ -459,11 +459,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case '.':
             step = Globals::steps.at(6);
 
-            if (Globals::octaveOffsets.at(6) > -5) {
-              Globals::octaveOffsets.at(6) = Globals::octaveOffsets.at(6)-1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(6) > -5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(6) = Globals::octaveOffsets[Globals::currentTrack].at(6)-1;
                 step->loc.y -= 0.5;
             } else {
-              Globals::octaveOffsets.at(6) = -5;
+              Globals::octaveOffsets[Globals::currentTrack].at(6) = -5;
             }
 
             break;
@@ -477,11 +477,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case 'p':
             step = Globals::steps.at(7);
 
-            if (Globals::octaveOffsets.at(7) < 5) {
-              Globals::octaveOffsets.at(7) = Globals::octaveOffsets.at(7)+1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(7) < 5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(7) = Globals::octaveOffsets[Globals::currentTrack].at(7)+1;
               step->loc.y += 0.5;
             } else {
-              Globals::octaveOffsets.at(7) = 5;
+              Globals::octaveOffsets[Globals::currentTrack].at(7) = 5;
             }
 
             break;
@@ -489,11 +489,11 @@ void keyboardFunc( unsigned char key, int x, int y )
         case '/':
             step = Globals::steps.at(7);
 
-            if (Globals::octaveOffsets.at(7) > -5) {
-              Globals::octaveOffsets.at(7) = Globals::octaveOffsets.at(7)-1;
+            if (Globals::octaveOffsets[Globals::currentTrack].at(7) > -5) {
+              Globals::octaveOffsets[Globals::currentTrack].at(7) = Globals::octaveOffsets[Globals::currentTrack].at(7)-1;
               step->loc.y -= 0.5;
             } else {
-              Globals::octaveOffsets.at(7) = -5;
+              Globals::octaveOffsets[Globals::currentTrack].at(7) = -5;
             }
 
             break;
@@ -663,7 +663,7 @@ void playStep(int prev, int idx){
     nextStep = Globals::steps.at(idx);
     nextStep->col.set(0.655, 0.859, 0.859);
 
-    if(Globals::stepBools.at(idx)) play(60+12*Globals::octaveOffsets.at(idx),100);
+    if(Globals::stepBools.at(idx)) play(60/*Globals::pitchOffsets.at(idx)*/+12*Globals::octaveOffsets[Globals::currentTrack].at(idx),100);
 }
 
 //-----------------------------------------------------------------------------

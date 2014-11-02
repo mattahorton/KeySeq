@@ -28,9 +28,11 @@ std::vector<YEntity *> Globals::steps;
 int Globals::numSteps = 8;
 int Globals::selectedStep = -1;
 int Globals::playingStep = 0;
+int Globals::currentTrack = 0;
 
 // Midi globals
-std::vector<int> Globals::octaveOffsets;
+std::array<std::vector<int>,4> Globals::octaveOffsets;
+std::array<std::vector<int>,4> Globals::pitchOffsets;
 std::vector<bool> Globals::stepBools;
 
 // Window size globals

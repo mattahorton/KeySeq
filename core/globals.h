@@ -18,6 +18,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <array>
 #include <utility>
 
 // defines
@@ -52,9 +53,11 @@ public:
     static int numSteps;
     static int selectedStep;
     static int playingStep;
+    static int currentTrack;
 
     // Midi globals
-    static std::vector<int> octaveOffsets;
+    static std::array<std::vector<int>, 4> octaveOffsets;
+    static std::array<std::vector<int>, 4> pitchOffsets;
     static std::vector<bool> stepBools;
 
     // path
