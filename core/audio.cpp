@@ -91,7 +91,7 @@ static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * user
         if( g_noteIndex < g_notes.size() )
         {
             g_synth->noteOn( 0, g_notes[g_noteIndex].pitch, g_notes[g_noteIndex].velocity * 127 );
-            g_synth->noteOn( 0, g_notes[g_noteIndex].pitch + 4, g_notes[g_noteIndex].velocity * 127 );
+            //g_synth->noteOn( 0, g_notes[g_noteIndex].pitch + 4, g_notes[g_noteIndex].velocity * 127 );
             g_nextTime += g_notes[g_noteIndex].duration * THE_SRATE;
             g_noteIndex++;
         }
