@@ -208,7 +208,7 @@ void reshapeFunc( GLsizei w, GLsizei h )
     // load the identity matrix
     glLoadIdentity( );
     // create the viewing frustum
-    gluPerspective( 45.0, (GLfloat) w / (GLfloat) h, 1.0, 300.0 );
+    gluPerspective( 50.0, (GLfloat) w / (GLfloat) h, 0.0005, 500.0 );
     // set the matrix mode to modelview
     glMatrixMode( GL_MODELVIEW );
     // load the identity matrix
