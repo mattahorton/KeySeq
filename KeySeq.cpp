@@ -841,7 +841,7 @@ void decrementVel(int num) {
 
   if (Globals::velOffsets[Globals::currentTrack].at(num) > 5) {
     Globals::velOffsets[Globals::currentTrack].at(num) = Globals::velOffsets[Globals::currentTrack].at(num)-1;
-    step->loc.y -= 0.33;
+    step->loc.y -= 0.3667;
   } else {
     Globals::velOffsets[Globals::currentTrack].at(num) = 5;
   }
@@ -858,7 +858,7 @@ void incrementVel(int num) {
 
   if (Globals::velOffsets[Globals::currentTrack].at(num) < 20) {
     Globals::velOffsets[Globals::currentTrack].at(num) = Globals::velOffsets[Globals::currentTrack].at(num)+1;
-    step->loc.y += 0.33;
+    step->loc.y += 0.3667;
   } else {
     Globals::velOffsets[Globals::currentTrack].at(num) = 20;
   }
@@ -887,12 +887,17 @@ void snapStepLocs() {
     case VELOCITY:
       offsets = Globals::velOffsets;
       base = -2.5f;
-      locStep = 0.33f;
+      locStep = 0.3667f;
       break;
   }
 
   for (int i = 0; i < Globals::steps.size(); i++) {
-    Globals::steps.at(i)->loc.y = base+locStep*offsets[Globals::currentTrack].at(i);
+    if (Globals::mode == VELOCITY) {
+      Globals::steps.at(i)->loc.y = base+locStep*(offsets[Globals::currentTrack].at(i)-5);
+    } else {
+      Globals::steps.at(i)->loc.y = base+locStep*offsets[Globals::currentTrack].at(i);
+    }
   }
+
 
 }
