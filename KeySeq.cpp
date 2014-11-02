@@ -59,6 +59,8 @@ void decrementOctave(int num);
 void incrementOctave(int num);
 void decrementPitch(int num);
 void incrementPitch(int num);
+void incrementVel(int num);
+void decrementVel(int num);
 
 // our datetype
 #define SAMPLE float
@@ -275,12 +277,25 @@ void keyboardFunc( unsigned char key, int x, int y )
               case OCTAVE:
                 incrementOctave(0);
                 break;
+              case VELOCITY:
+                incrementVel(0);
+                break;
             }
 
             break;
         case 'Z':
         case 'z':
-            decrementOctave(0);
+            switch(Globals::mode) {
+              case PITCH:
+                decrementPitch(0);
+                break;
+              case OCTAVE:
+                decrementOctave(0);
+                break;
+              case VELOCITY:
+                decrementVel(0);
+                break;
+            }
 
             break;
         case 'S':
@@ -291,12 +306,32 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 'W':
         case 'w':
-            incrementOctave(1);
+            switch(Globals::mode) {
+              case PITCH:
+                incrementPitch(1);
+                break;
+              case OCTAVE:
+                incrementOctave(1);
+                break;
+              case VELOCITY:
+                incrementVel(1);
+                break;
+            }
 
             break;
         case 'X':
         case 'x':
-            decrementOctave(1);
+            switch(Globals::mode) {
+              case PITCH:
+                decrementPitch(1);
+                break;
+              case OCTAVE:
+                decrementOctave(1);
+                break;
+              case VELOCITY:
+                decrementVel(1);
+                break;
+            }
 
             break;
         case 'D':
@@ -307,12 +342,32 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 'E':
         case 'e':
-            incrementOctave(2);
+            switch(Globals::mode) {
+              case PITCH:
+                incrementPitch(2);
+                break;
+              case OCTAVE:
+                incrementOctave(2);
+                break;
+              case VELOCITY:
+                incrementVel(2);
+                break;
+            }
 
             break;
         case 'C':
         case 'c':
-            decrementOctave(2);
+            switch(Globals::mode) {
+              case PITCH:
+                decrementPitch(2);
+                break;
+              case OCTAVE:
+                decrementOctave(2);
+                break;
+              case VELOCITY:
+                decrementVel(2);
+                break;
+            }
 
             break;
         case 'F':
@@ -323,12 +378,32 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 'R':
         case 'r':
-            incrementOctave(3);
+            switch(Globals::mode) {
+              case PITCH:
+                incrementPitch(3);
+                break;
+              case OCTAVE:
+                incrementOctave(3);
+                break;
+              case VELOCITY:
+                incrementVel(3);
+                break;
+            }
 
             break;
         case 'V':
         case 'v':
-            decrementOctave(3);
+            switch(Globals::mode) {
+              case PITCH:
+                decrementPitch(3);
+                break;
+              case OCTAVE:
+                decrementOctave(3);
+                break;
+              case VELOCITY:
+                decrementVel(3);
+                break;
+            }
 
             break;
         case 'J':
@@ -339,12 +414,32 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 'U':
         case 'u':
-            incrementOctave(4);
+            switch(Globals::mode) {
+              case PITCH:
+                incrementPitch(4);
+                break;
+              case OCTAVE:
+                incrementOctave(4);
+                break;
+              case VELOCITY:
+                incrementVel(4);
+                break;
+            }
 
             break;
         case 'M':
         case 'm':
-            decrementOctave(4);
+            switch(Globals::mode) {
+              case PITCH:
+                decrementPitch(4);
+                break;
+              case OCTAVE:
+                decrementOctave(4);
+                break;
+              case VELOCITY:
+                decrementVel(4);
+                break;
+            }
 
             break;
         case 'K':
@@ -356,12 +451,32 @@ void keyboardFunc( unsigned char key, int x, int y )
 
         case 'I':
         case 'i':
-            incrementOctave(5);
+            switch(Globals::mode) {
+              case PITCH:
+                incrementPitch(5);
+                break;
+              case OCTAVE:
+                incrementOctave(5);
+                break;
+              case VELOCITY:
+                incrementVel(5);
+                break;
+            }
 
             break;
         case '<':
         case ',':
-            decrementOctave(5);
+            switch(Globals::mode) {
+              case PITCH:
+                decrementPitch(5);
+                break;
+              case OCTAVE:
+                decrementOctave(5);
+                break;
+              case VELOCITY:
+                decrementVel(5);
+                break;
+            }
 
             break;
         case 'L':
@@ -372,12 +487,32 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 'O':
         case 'o':
-            incrementOctave(6);
+            switch(Globals::mode) {
+              case PITCH:
+                incrementPitch(6);
+                break;
+              case OCTAVE:
+                incrementOctave(6);
+                break;
+              case VELOCITY:
+                incrementVel(6);
+                break;
+            }
 
             break;
         case '>':
         case '.':
-            decrementOctave(6);
+            switch(Globals::mode) {
+              case PITCH:
+                decrementPitch(6);
+                break;
+              case OCTAVE:
+                decrementOctave(6);
+                break;
+              case VELOCITY:
+                decrementVel(6);
+                break;
+            }
 
             break;
         case ':':
@@ -388,12 +523,32 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 'P':
         case 'p':
-            incrementOctave(7);
+            switch(Globals::mode) {
+              case PITCH:
+                incrementPitch(7);
+                break;
+              case OCTAVE:
+                incrementOctave(7);
+                break;
+              case VELOCITY:
+                incrementVel(7);
+                break;
+            }
 
             break;
         case '?':
         case '/':
-            decrementOctave(7);
+            switch(Globals::mode) {
+              case PITCH:
+                decrementPitch(7);
+                break;
+              case OCTAVE:
+                decrementOctave(7);
+                break;
+              case VELOCITY:
+                decrementVel(7);
+                break;
+            }
 
             break;
     }
@@ -408,25 +563,40 @@ void keyboardFunc( unsigned char key, int x, int y )
 //-----------------------------------------------------------------------------
 void specialFunc(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
-      // if (Globals::selectedStep != -1) {
-      //   if (Globals::octaveOffsets.at(Globals::selectedStep) < 5) {
-      //     Globals::octaveOffsets.at(Globals::selectedStep) =
-      //       Globals::octaveOffsets.at(Globals::selectedStep)+1;
-      //   }
-      // }
+
     } else if (key == GLUT_KEY_DOWN) {
-      // if (Globals::selectedStep != -1) {
-      //   if (Globals::octaveOffsets.at(Globals::selectedStep) > -5) {
-      //     Globals::octaveOffsets.at(Globals::selectedStep) =
-      //       Globals::octaveOffsets.at(Globals::selectedStep)-1;
-      //   } else {
-      //     Globals::octaveOffsets.at(Globals::selectedStep) = -5;
-      //   }
-      // }
+
     } else if (key == GLUT_KEY_RIGHT) {
-        //Globals::cube->size = Globals::cube->size + Vector3D::Vector3D(2,5,6);
+        switch(Globals::mode) {
+          case PITCH:
+            Globals::mode = OCTAVE;
+            Globals::modeText->set("Octave");
+            break;
+          case OCTAVE:
+            Globals::mode = VELOCITY;
+            Globals::modeText->set("Velocity");
+            break;
+          case VELOCITY:
+            Globals::mode = PITCH;
+            Globals::modeText->set("Pitch");
+            break;
+        }
+
     } else if (key == GLUT_KEY_LEFT) {
-        //Globals::cube->size = Globals::cube->size - Vector3D::Vector3D(1,1,1);
+        switch(Globals::mode) {
+          case PITCH:
+            Globals::mode = VELOCITY;
+            Globals::modeText->set("Velocity");
+            break;
+          case OCTAVE:
+            Globals::mode = PITCH;
+            Globals::modeText->set("Pitch");
+            break;
+          case VELOCITY:
+            Globals::mode = OCTAVE;
+            Globals::modeText->set("Octave");
+            break;
+        }
     }
 }
 
@@ -507,6 +677,13 @@ void initSeq() {
     YEntity * seq = new YEntity();
     Globals::sim->root().addChild(seq);
 
+    Globals::modeText = new YText(1);
+    Globals::modeText->loc = Vector3D::Vector3D(6,3.65,0);
+    Globals::modeText->sca = Vector3D::Vector3D(3,3,3);
+    Globals::modeText->col = Vector3D::Vector3D(0.953f, 0.525f, 0.188f);
+    Globals::modeText->set("Pitch");
+    seq->addChild(Globals::modeText);
+
     for (int i = 0; i < 8; i++) {
         YCubeOutline * cube = new YCubeOutline();
         cube->loc = Vector3D::Vector3D((i-6.0)+(i*.7),0,0);
@@ -567,7 +744,7 @@ void playStep(int prev, int idx){
       track = Globals::currentTrack;
       pitchOff = Globals::pitchOffsets[Globals::currentTrack].at(idx);
       octOff = Globals::octaveOffsets[Globals::currentTrack].at(idx);
-      
+
       play(60+pitchOff+12*octOff,100);
     }
 
@@ -646,6 +823,38 @@ void incrementPitch(int num) {
     step->loc.y += 0.5;
   } else {
     Globals::pitchOffsets[Globals::currentTrack].at(num) = 11;
+  }
+
+}
+//-----------------------------------------------------------------------------
+// Name: decrementVel( )
+// Desc: decrement the velocity of a particular step
+//-----------------------------------------------------------------------------
+void decrementVel(int num) {
+  YEntity * step = Globals::steps.at(num);
+
+  if (Globals::velOffsets[Globals::currentTrack].at(num) > 0) {
+    Globals::velOffsets[Globals::currentTrack].at(num) = Globals::velOffsets[Globals::currentTrack].at(num)-.05;
+    step->loc.y -= 0.5;
+  } else {
+    Globals::velOffsets[Globals::currentTrack].at(num) = 0;
+  }
+
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: incrementVel( )
+// Desc: increment the velocity of a particular step
+//-----------------------------------------------------------------------------
+void incrementVel(int num) {
+  YEntity * step = Globals::steps.at(num);
+
+  if (Globals::velOffsets[Globals::currentTrack].at(num) < 11) {
+    Globals::velOffsets[Globals::currentTrack].at(num) = Globals::velOffsets[Globals::currentTrack].at(num)+.05;
+    step->loc.y += 0.5;
+  } else {
+    Globals::velOffsets[Globals::currentTrack].at(num) = 11;
   }
 
 }

@@ -59,7 +59,9 @@ public:
     // Midi globals
     static std::array<std::vector<int>, 4> octaveOffsets;
     static std::array<std::vector<int>, 4> pitchOffsets;
+    static std::array<std::vector<int>, 4> velOffsets;
     static std::vector<bool> stepBools;
+    static YText * modeText;
 
     // path
     static std::string path;
