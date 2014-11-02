@@ -139,6 +139,7 @@ int main( int argc, char ** argv )
     // Midi setup
     for (int i = 0; i < Globals::steps.size(); i++) {
       Globals::octaveOffsets[Globals::currentTrack].push_back(0);
+      Globals::pitchOffsets[Globals::currentTrack].push_back(0);
       Globals::stepBools.push_back(false);
     }
 
@@ -267,7 +268,15 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 'Q':
         case 'q':
-            incrementOctave(0);
+            switch(Globals::mode) {
+              case PITCH:
+                incrementPitch(0);
+                break;
+              case OCTAVE:
+                incrementOctave(0);
+                break;
+            }
+
             break;
         case 'Z':
         case 'z':
@@ -542,6 +551,7 @@ void selectStep(int prev, int idx){
 void playStep(int prev, int idx){
     YEntity * step = NULL;
     YEntity * nextStep = NULL;
+    int track, pitchOff, octOff;
 
     if (!(prev == -1) && (prev != Globals::selectedStep)) {
       step = Globals::steps.at(prev);
@@ -553,7 +563,14 @@ void playStep(int prev, int idx){
     nextStep = Globals::steps.at(idx);
     nextStep->col.set(0.655, 0.859, 0.859);
 
-    if(Globals::stepBools.at(idx)) play(60/*Globals::pitchOffsets.at(idx)*/+12*Globals::octaveOffsets[Globals::currentTrack].at(idx),100);
+    if(Globals::stepBools.at(idx)) {
+      track = Globals::currentTrack;
+      pitchOff = Globals::pitchOffsets[Globals::currentTrack].at(idx);
+      octOff = Globals::octaveOffsets[Globals::currentTrack].at(idx);
+      
+      play(60+pitchOff+12*octOff,100);
+    }
+
 }
 
 //-----------------------------------------------------------------------------
@@ -584,8 +601,8 @@ void decrementOctave(int num) {
 
 
 //-----------------------------------------------------------------------------
-// Name: decrementOctave( )
-// Desc: decrement the octave of a particular step
+// Name: incrementOctave( )
+// Desc: increment the octave of a particular step
 //-----------------------------------------------------------------------------
 void incrementOctave(int num) {
   YEntity * step = Globals::steps.at(num);
@@ -595,6 +612,40 @@ void incrementOctave(int num) {
     step->loc.y += 0.5;
   } else {
     Globals::octaveOffsets[Globals::currentTrack].at(num) = 5;
+  }
+
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: decrementPitch( )
+// Desc: decrement the pitch of a particular step
+//-----------------------------------------------------------------------------
+void decrementPitch(int num) {
+  YEntity * step = Globals::steps.at(num);
+
+  if (Globals::pitchOffsets[Globals::currentTrack].at(num) > 0) {
+    Globals::pitchOffsets[Globals::currentTrack].at(num) = Globals::pitchOffsets[Globals::currentTrack].at(num)-1;
+    step->loc.y -= 0.5;
+  } else {
+    Globals::pitchOffsets[Globals::currentTrack].at(num) = 0;
+  }
+
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: incrementPitch( )
+// Desc: increment the pitch of a particular step
+//-----------------------------------------------------------------------------
+void incrementPitch(int num) {
+  YEntity * step = Globals::steps.at(num);
+
+  if (Globals::pitchOffsets[Globals::currentTrack].at(num) < 11) {
+    Globals::pitchOffsets[Globals::currentTrack].at(num) = Globals::pitchOffsets[Globals::currentTrack].at(num)+1;
+    step->loc.y += 0.5;
+  } else {
+    Globals::pitchOffsets[Globals::currentTrack].at(num) = 11;
   }
 
 }

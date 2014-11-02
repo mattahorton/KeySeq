@@ -27,7 +27,7 @@
 #define NUMCHANNELS  2
 #define MAX_TEXTURES 32
 
-
+enum Mode { PITCH, OCTAVE, VELOCITY };
 
 
 
@@ -54,7 +54,7 @@ public:
     static int selectedStep;
     static int playingStep;
     static int currentTrack;
-    static std::string mode;
+    static Mode mode;
 
     // Midi globals
     static std::array<std::vector<int>, 4> octaveOffsets;
