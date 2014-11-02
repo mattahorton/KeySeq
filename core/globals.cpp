@@ -29,6 +29,7 @@ int Globals::numSteps = 8;
 int Globals::selectedStep = -1;
 int Globals::playingStep = 0;
 int Globals::currentTrack = 0;
+std::string Globals::mode = "pitch";
 
 // Midi globals
 std::array<std::vector<int>,4> Globals::octaveOffsets;

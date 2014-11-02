@@ -54,6 +54,7 @@ public:
     static int selectedStep;
     static int playingStep;
     static int currentTrack;
+    static std::string mode;
 
     // Midi globals
     static std::array<std::vector<int>, 4> octaveOffsets;
