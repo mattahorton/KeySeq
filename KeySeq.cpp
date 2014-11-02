@@ -61,6 +61,7 @@ void decrementPitch(int num);
 void incrementPitch(int num);
 void incrementVel(int num);
 void decrementVel(int num);
+void snapStepLocs();
 
 // our datetype
 #define SAMPLE float
@@ -142,8 +143,10 @@ int main( int argc, char ** argv )
     for (int i = 0; i < Globals::steps.size(); i++) {
       Globals::octaveOffsets[Globals::currentTrack].push_back(0);
       Globals::pitchOffsets[Globals::currentTrack].push_back(0);
+      Globals::velOffsets[Globals::currentTrack].push_back(10);
       Globals::stepBools.push_back(false);
     }
+    snapStepLocs();
 
     // Start Audio
     audio_start();
@@ -598,6 +601,8 @@ void specialFunc(int key, int x, int y) {
             break;
         }
     }
+
+    snapStepLocs();
 }
 
 
@@ -728,7 +733,7 @@ void selectStep(int prev, int idx){
 void playStep(int prev, int idx){
     YEntity * step = NULL;
     YEntity * nextStep = NULL;
-    int track, pitchOff, octOff;
+    int track, pitchOff, octOff, velOff;
 
     if (!(prev == -1) && (prev != Globals::selectedStep)) {
       step = Globals::steps.at(prev);
@@ -744,8 +749,9 @@ void playStep(int prev, int idx){
       track = Globals::currentTrack;
       pitchOff = Globals::pitchOffsets[Globals::currentTrack].at(idx);
       octOff = Globals::octaveOffsets[Globals::currentTrack].at(idx);
+      velOff = Globals::velOffsets[Globals::currentTrack].at(idx);
 
-      play(60+pitchOff+12*octOff,100);
+      play(60+pitchOff+12*octOff,velOff*.05);
     }
 
 }
@@ -833,11 +839,11 @@ void incrementPitch(int num) {
 void decrementVel(int num) {
   YEntity * step = Globals::steps.at(num);
 
-  if (Globals::velOffsets[Globals::currentTrack].at(num) > 0) {
-    Globals::velOffsets[Globals::currentTrack].at(num) = Globals::velOffsets[Globals::currentTrack].at(num)-.05;
-    step->loc.y -= 0.5;
+  if (Globals::velOffsets[Globals::currentTrack].at(num) > 5) {
+    Globals::velOffsets[Globals::currentTrack].at(num) = Globals::velOffsets[Globals::currentTrack].at(num)-1;
+    step->loc.y -= 0.33;
   } else {
-    Globals::velOffsets[Globals::currentTrack].at(num) = 0;
+    Globals::velOffsets[Globals::currentTrack].at(num) = 5;
   }
 
 }
@@ -850,11 +856,43 @@ void decrementVel(int num) {
 void incrementVel(int num) {
   YEntity * step = Globals::steps.at(num);
 
-  if (Globals::velOffsets[Globals::currentTrack].at(num) < 11) {
-    Globals::velOffsets[Globals::currentTrack].at(num) = Globals::velOffsets[Globals::currentTrack].at(num)+.05;
-    step->loc.y += 0.5;
+  if (Globals::velOffsets[Globals::currentTrack].at(num) < 20) {
+    Globals::velOffsets[Globals::currentTrack].at(num) = Globals::velOffsets[Globals::currentTrack].at(num)+1;
+    step->loc.y += 0.33;
   } else {
-    Globals::velOffsets[Globals::currentTrack].at(num) = 11;
+    Globals::velOffsets[Globals::currentTrack].at(num) = 20;
+  }
+
+}
+//-----------------------------------------------------------------------------
+// Name: snapStepLocs( )
+// Desc: snap step locations to current offsets for mode
+//-----------------------------------------------------------------------------
+void snapStepLocs() {
+  float base;
+  float locStep;
+  array<vector<int>,4> offsets;
+
+  switch(Globals::mode) {
+    case PITCH:
+      offsets = Globals::pitchOffsets;
+      base = -2.5f;
+      locStep = 0.5f;
+      break;
+    case OCTAVE:
+      offsets = Globals::octaveOffsets;
+      base = 0.0f;
+      locStep = 0.5f;
+      break;
+    case VELOCITY:
+      offsets = Globals::velOffsets;
+      base = -2.5f;
+      locStep = 0.33f;
+      break;
+  }
+
+  for (int i = 0; i < Globals::steps.size(); i++) {
+    Globals::steps.at(i)->loc.y = base+locStep*offsets[Globals::currentTrack].at(i);
   }
 
 }

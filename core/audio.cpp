@@ -60,7 +60,7 @@ void play(float pitch, float velocity )
     // clear notes
     g_notes.clear();
 
-    g_notes.push_back( Note(0, pitch /*+ i*2*/, 1/*(1 - i/24.0)*/, .15/**(1 - i/24.0) */) );
+    g_notes.push_back( Note(0, pitch, velocity, .15/**(1 - i/24.0) */) );
 
     // unlock
     g_mutex.release();
