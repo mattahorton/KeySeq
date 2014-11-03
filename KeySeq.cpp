@@ -88,32 +88,24 @@ long g_bufferSize;
 //-----------------------------------------------------------------------------
 void help()
 {
-//    cerr << "----------------------------------------------------" << endl;
-//    cerr << "sound-sphere (v1.0)" << endl;
-//    cerr << "Matt Horton" << endl;
-//    cerr << "http://ccrma.stanford.edu/~mattah/256a/sound-sphere/" << endl;
-//    cerr << "----------------------------------------------------" << endl;
-//    cerr << " All modifier keys can be used in their capital form" << endl;
-//    cerr << endl;
-//    cerr << "'h' - print this help message" << endl;
-//    cerr << "'m' - toggle fullscreen" << endl;
-//    cerr << "'q' - quit visualization" << endl;
-//    cerr << "'c' - show/hide circular signal spectrum (will hide sphere if shown)" << endl;
-//    cerr << "'s' - show/hide spherical signal spectrum" << endl;
-//    cerr << "'f' - toggle drawing of historical spectra" << endl;
-//    cerr << "'w' - show/hide time-domain window visualization" << endl;
-//    cerr << "'p' - toggle party mode" << endl;
-//    cerr << "'a' - toggle max averaging in party mode. Makes color change more smoothly." << endl;
-//    cerr << "'b' - toggle buggy...er...awesome mode" << endl;
-//    cerr << "'r' - toggle rotation" << endl;
-//    cerr << endl;
-//    cerr << "radius controls:" << endl;
-//    cerr << "Press or hold the up and down keys to increase or " << endl;
-//    cerr << "decrease (respectively) the radius of the sphere or circle." << endl;
-//    cerr << endl;
-//    cerr << "rotation controls:" << endl;
-//    cerr << "Press or hold the left and right keys to rotate about the y axis." << endl;
-//    cerr << "----------------------------------------------------" << endl;
+   cerr << "----------------------------------------------------" << endl;
+   cerr << "keyseq (v1.0)" << endl;
+   cerr << "Matt Horton" << endl;
+   cerr << "http://ccrma.stanford.edu/~mattah/256a/keyseq/" << endl;
+   cerr << "----------------------------------------------------" << endl;
+   cerr << "Select a step by pressing on of the home keys (a, s, d, f, etc.)" << endl;
+   cerr << endl;
+   cerr << "Press Enter to turn a step on or off." << endl;
+   cerr << endl;
+   cerr << "The keys above and below the selection keys modify the value " << endl;
+   cerr << "of the current paramater for the step to which they correspond. " << endl;
+   cerr << endl;
+   cerr << "So, Q and Z will raise and lower pitch, octave, or velocity " << endl;
+   cerr << "for the step selected by A." << endl;
+   cerr << endl;
+   cerr << "Default paramater is pitch. Cycle through parameters using " << endl;
+   cerr << "right and left arrows. Up and down arrows move through tracks." << endl;
+   cerr << "----------------------------------------------------" << endl;
 }
 
 
@@ -761,7 +753,7 @@ void playStep(int prev, int idx){
     nextStep->col.set(0.655, 0.859, 0.859);
 
     for (int i = 0; i < 4; i++) {
-      
+
       if(Globals::stepBools[i].at(idx)) {
 
         pitchOff = Globals::pitchOffsets[i].at(idx);
