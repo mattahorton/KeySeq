@@ -26,6 +26,12 @@
 #define FRAMESIZE    512
 #define NUMCHANNELS  2
 #define MAX_TEXTURES 32
+#define TAN 0.878, 0.894, 0.8
+#define BLUE 0.027, 0.698, 0.88
+#define GREEN 0.455, 0.812, 0.682
+#define ORANGE 0.969, 0.678, 0.455
+#define LINEON 0.953f, 0.525f, 0.188f
+#define LINEOFF 0.655, 0.859, 0.859
 
 enum Mode { PITCH, OCTAVE, VELOCITY };
 
@@ -61,7 +67,7 @@ public:
     static std::array<std::vector<int>, 4> octaveOffsets;
     static std::array<std::vector<int>, 4> pitchOffsets;
     static std::array<std::vector<int>, 4> velOffsets;
-    static std::vector<bool> stepBools;
+    static std::array<std::vector<bool>, 4> stepBools;
     static YText * modeText;
 
     // path

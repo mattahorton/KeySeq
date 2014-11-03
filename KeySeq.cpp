@@ -62,6 +62,9 @@ void incrementPitch(int num);
 void incrementVel(int num);
 void decrementVel(int num);
 void snapStepLocs();
+void decTrack();
+void incTrack();
+void setLineColors();
 
 // our datetype
 #define SAMPLE float
@@ -140,11 +143,13 @@ int main( int argc, char ** argv )
     initSeq();
 
     // Midi setup
-    for (int i = 0; i < Globals::steps.size(); i++) {
-      Globals::octaveOffsets[Globals::currentTrack].push_back(0);
-      Globals::pitchOffsets[Globals::currentTrack].push_back(0);
-      Globals::velOffsets[Globals::currentTrack].push_back(10);
-      Globals::stepBools.push_back(false);
+    for (int j = 0; j < 4; j++) {
+      for (int i = 0; i < Globals::steps.size(); i++) {
+        Globals::octaveOffsets[j].push_back(0);
+        Globals::pitchOffsets[j].push_back(0);
+        Globals::velOffsets[j].push_back(10);
+        Globals::stepBools[j].push_back(false);
+      }
     }
     snapStepLocs();
 
@@ -246,14 +251,11 @@ void keyboardFunc( unsigned char key, int x, int y )
             break;
         case 13: // enter
             if(Globals::selectedStep != -1) {
-              currentVal = Globals::stepBools.at(Globals::selectedStep);
-              
-              Globals::stepBools.at(Globals::selectedStep) = !currentVal;
-              if (Globals::stepBools.at(Globals::selectedStep)) {
-                Globals::lines.at(Globals::selectedStep)->col.set(0.953f, 0.525f, 0.188f);
-              } else {
-                Globals::lines.at(Globals::selectedStep)->col.set(0.412, 0.824, 0.906);;
-              }
+              currentVal = Globals::stepBools[Globals::currentTrack].at(Globals::selectedStep);
+
+              Globals::stepBools[Globals::currentTrack].at(Globals::selectedStep) = !currentVal;
+
+              setLineColors();
 
             }
             break;
@@ -575,9 +577,9 @@ void keyboardFunc( unsigned char key, int x, int y )
 //-----------------------------------------------------------------------------
 void specialFunc(int key, int x, int y) {
     if (key == GLUT_KEY_UP) {
-
+      incTrack();
     } else if (key == GLUT_KEY_DOWN) {
-
+      decTrack();
     } else if (key == GLUT_KEY_RIGHT) {
         switch(Globals::mode) {
           case PITCH:
@@ -745,6 +747,8 @@ void playStep(int prev, int idx){
     YEntity * step = NULL;
     YEntity * nextStep = NULL;
     int track, pitchOff, octOff, velOff;
+    vector<int> chans;
+    vector<float> pitches, vels;
 
     if (!(prev == -1) && (prev != Globals::selectedStep)) {
       step = Globals::steps.at(prev);
@@ -756,15 +760,21 @@ void playStep(int prev, int idx){
     nextStep = Globals::steps.at(idx);
     nextStep->col.set(0.655, 0.859, 0.859);
 
-    if(Globals::stepBools.at(idx)) {
-      track = Globals::currentTrack;
-      pitchOff = Globals::pitchOffsets[Globals::currentTrack].at(idx);
-      octOff = Globals::octaveOffsets[Globals::currentTrack].at(idx);
-      velOff = Globals::velOffsets[Globals::currentTrack].at(idx);
+    for (int i = 0; i < 4; i++) {
+      
+      if(Globals::stepBools[i].at(idx)) {
 
-      play(60+pitchOff+12*octOff,velOff*.05);
+        pitchOff = Globals::pitchOffsets[i].at(idx);
+        octOff = Globals::octaveOffsets[i].at(idx);
+        velOff = Globals::velOffsets[i].at(idx);
+
+        chans.push_back(i);
+        pitches.push_back(60+pitchOff+12*octOff);
+        vels.push_back(.05*velOff);
+      }
+
+      play(chans,pitches,vels);
     }
-
 }
 
 //-----------------------------------------------------------------------------
@@ -875,6 +885,8 @@ void incrementVel(int num) {
   }
 
 }
+
+
 //-----------------------------------------------------------------------------
 // Name: snapStepLocs( )
 // Desc: snap step locations to current offsets for mode
@@ -911,4 +923,81 @@ void snapStepLocs() {
   }
 
 
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: incTrack( )
+// Desc: increment the track number
+//-----------------------------------------------------------------------------
+void incTrack() {
+  Globals::currentTrack = (Globals::currentTrack + 1)%4;
+
+  switch (Globals::currentTrack) {
+    case 0:
+      Globals::bgColor.set(Vector3D::Vector3D(TAN));
+      break;
+    case 1:
+      Globals::bgColor.set(Vector3D::Vector3D(BLUE));
+      break;
+    case 2:
+      Globals::bgColor.set(Vector3D::Vector3D(GREEN));
+      break;
+    case 3:
+      Globals::bgColor.set(Vector3D::Vector3D(ORANGE));
+      break;
+  }
+
+  Globals::bgColor.setSlew(1);
+  glClearColor( Globals::bgColor.actual().x, Globals::bgColor.actual().y, Globals::bgColor.actual().z, 1.0f );
+
+  setLineColors();
+}
+
+//-----------------------------------------------------------------------------
+// Name: decTrack( )
+// Desc: decrement the track number
+//-----------------------------------------------------------------------------
+void decTrack() {
+  if (Globals::currentTrack == 0) {
+    Globals::currentTrack = 3;
+  } else {
+    Globals::currentTrack -= 1;
+  }
+
+  switch (Globals::currentTrack) {
+    case 0:
+      Globals::bgColor.set(Vector3D::Vector3D(TAN));
+      break;
+    case 1:
+      Globals::bgColor.set(Vector3D::Vector3D(BLUE));
+      break;
+    case 2:
+      Globals::bgColor.set(Vector3D::Vector3D(GREEN));
+      break;
+    case 3:
+      Globals::bgColor.set(Vector3D::Vector3D(ORANGE));
+      break;
+  }
+
+  Globals::bgColor.setSlew(1);
+  glClearColor( Globals::bgColor.actual().x, Globals::bgColor.actual().y, Globals::bgColor.actual().z, 1.0f );
+
+  setLineColors();
+
+}
+
+
+//-----------------------------------------------------------------------------
+// Name: setLineColors( )
+// Desc: set the line colors for the current track
+//-----------------------------------------------------------------------------
+void setLineColors() {
+  for (int step = 0; step < 8; step++) {
+    if (Globals::stepBools[Globals::currentTrack].at(step)) {
+      Globals::lines.at(step)->col.set(LINEON);
+    } else {
+      Globals::lines.at(step)->col.set(LINEOFF);
+    }
+  }
 }

@@ -36,7 +36,7 @@ Mode Globals::mode = PITCH;
 std::array<std::vector<int>,4> Globals::octaveOffsets;
 std::array<std::vector<int>,4> Globals::pitchOffsets;
 std::array<std::vector<int>,4> Globals::velOffsets;
-std::vector<bool> Globals::stepBools;
+std::array<std::vector<bool>,4> Globals::stepBools;
 YText * Globals::modeText;
 
 // Window size globals

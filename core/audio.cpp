@@ -50,17 +50,16 @@ int g_noteIndex = 0;
 XMutex g_mutex;
 
 // play some notes
-void play(float pitch, float velocity )
+void play(vector<int> &channels, vector<float> &pitches, vector<float> &vels )
 {
-    //cerr << "pitch：" << pitch << " " << velocity << endl;
-    // g_synth->noteOn( 0, pitch, velocity * 128 );
-
     // lock
     g_mutex.acquire();
     // clear notes
     g_notes.clear();
 
-    g_notes.push_back( Note(0, pitch, velocity, .15/**(1 - i/24.0) */) );
+    for (int i = 0; i < pitches.size(); i++) {
+      g_notes.push_back( Note(channels.at(i), pitches.at(i), vels.at(i), 0) );
+    }
 
     // unlock
     g_mutex.release();
@@ -90,8 +89,7 @@ static void audio_callback( SAMPLE * buffer, unsigned int numFrames, void * user
         g_mutex.acquire();
         if( g_noteIndex < g_notes.size() )
         {
-            g_synth->noteOn( 0, g_notes[g_noteIndex].pitch, g_notes[g_noteIndex].velocity * 127 );
-            //g_synth->noteOn( 0, g_notes[g_noteIndex].pitch + 4, g_notes[g_noteIndex].velocity * 127 );
+            g_synth->noteOn( g_notes[g_noteIndex].channel, g_notes[g_noteIndex].pitch, g_notes[g_noteIndex].velocity * 127 );
             g_nextTime += g_notes[g_noteIndex].duration * THE_SRATE;
             g_noteIndex++;
         }
@@ -136,8 +134,8 @@ bool audio_init( unsigned int srate, unsigned int frameSize, unsigned channels )
 
     // allocate echo
     g_echo = new YEcho( srate );
-    g_echo->setDelay( 0, .25 );
-    g_echo->setDelay( 1, .5 );
+    g_echo->setDelay( 0, .1 );
+    g_echo->setDelay( 1, .1 );
 
     // allocate
     Globals::lastAudioBuffer = new SAMPLE[frameSize*channels];
