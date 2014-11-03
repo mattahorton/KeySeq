@@ -245,8 +245,9 @@ void keyboardFunc( unsigned char key, int x, int y )
             exit(1);
             break;
         case 13: // enter
-            currentVal = Globals::stepBools.at(Globals::selectedStep);
             if(Globals::selectedStep != -1) {
+              currentVal = Globals::stepBools.at(Globals::selectedStep);
+              
               Globals::stepBools.at(Globals::selectedStep) = !currentVal;
               if (Globals::stepBools.at(Globals::selectedStep)) {
                 Globals::lines.at(Globals::selectedStep)->col.set(0.953f, 0.525f, 0.188f);

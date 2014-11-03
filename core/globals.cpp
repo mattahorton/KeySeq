@@ -62,7 +62,10 @@ GLfloat Globals::blendRed = 0.0f;
 GLenum Globals::fillmode = GL_FILL;
 
 // Default background fill
-iSlew3D Globals::bgColor(0.878, 0.894, 0.8,1.0f);
+iSlew3D Globals::bgColor(0.878, 0.894, 0.8, 1.0f); //option 1
+//iSlew3D Globals::bgColor(0.027, 0.698, 0.88, 1.0f); //option 2
+//iSlew3D Globals::bgColor(0.455, 0.812, 0.682, 1.0f); //option 3
+//iSlew3D Globals::bgColor(0.969, 0.678, 0.455, 1.0f); //option 4
 std::string Globals::path = "";
 std::string Globals::relpath = "data/texture/";
 std::string Globals::datapath = "";
