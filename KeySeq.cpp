@@ -93,7 +93,7 @@ void help()
    cerr << "Matt Horton" << endl;
    cerr << "http://ccrma.stanford.edu/~mattah/256a/keyseq/" << endl;
    cerr << "----------------------------------------------------" << endl;
-   cerr << "Select a step by pressing on of the home keys (a, s, d, f, etc.)" << endl;
+   cerr << "Select a step by pressing one of the home keys (a, s, d, f, etc.)" << endl;
    cerr << endl;
    cerr << "Press Enter to turn a step on or off." << endl;
    cerr << endl;
